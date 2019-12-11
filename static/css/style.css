@@ -1,0 +1,71 @@
+Body {
+    background-color: #FFF8DC;
+}
+
+.fon_grey {
+    background-color: #95999c;
+    font-size: 24px;
+}
+
+
+.util-table{
+    white-space: nowrap;
+}
+.table-bordered-color {
+    border: 1px solid #000000;
+    font-size: 16px;
+    text-align: center;
+    width: 100%;
+
+}
+
+.table-bordered-color th {
+
+    border: 1px solid #000000;
+}
+
+.table-bordered-color td {
+    border: 1px solid #000000;
+}
+
+.table-bordered-color thead th,
+.table-bordered-color thead td {
+    border: 1px solid #000000;
+}
+
+.p_p {
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.table1 {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    background: white;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin: 0 auto 20px;
+}
+.img1{
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0);
+}
+.img1:before{
+    content: "Чек-лист";
+    color: #000000;
+    position: absolute;
+    margin: 0 -3px;
+    white-space: nowrap;
+}
+.img1:hover{
+    color: rgba(0, 0, 0, 0);
+    content: "Xtr";
+}
+
+.text-table{
+    text-align: center;
+}

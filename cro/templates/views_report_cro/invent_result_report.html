@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-8">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input id="shop-input" class="form-control mr-sm-2" type="search" placeholder="Введите магазин"
+                               aria-label="Search">
+                        <a href="{% url 'search_shop_url' %}" id="search-shop">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                        </a>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <table id="table_id" class="table table-bordered table-dark ">
+                        <thead>
+                        <tr>
+                            <th scope="col">Магазин</th>
+                            <th scope="col">Дата</th>
+                            <th scope="col">ВСКРО</th>
+                            <th scope="col">Тип инв</th>
+                            <th scope="col">ДМ</th>
+                            <th scope="col">ДМ прин-ий</th>
+                            <th scope="col">СВ</th>
+                            <th scope="col">Осн.место хран.</th>
+                            <th scope="col">Зона Брака</th>
+                            <th scope="col">Бал.Лок</th>
+                            <th scope="col">4линия</th>
+                            <th scope="col">001 счет</th>
+                            <th scope="col">Итого</th>
+                            <th scope="col">TO</th>
+                            <th scope="col">% от ТО</th>
+                            <th scope="col">Дата пред.инвент</th>
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for item in model %}
+                            <tr>
+                                <td class="util-table">{{ item.shop }}</td>
+                                <td>{{ item.date_inv }}</td>
+                                <td class="util-table">{{ item.vscro }}</td>
+                                <td>{{ item.type_inv }}</td>
+                                <td class="util-table">{{ item.dm_shop }}</td>
+                                <td class="util-table">{{ item.dm_shop_new }}</td>
+                                <td class="util-table">{{ item.sv_shop }}</td>
+                                <td>{{ item.res_main }}</td>
+                                <td>{{ item.res_defect }}</td>
+                                <td>{{ item.res_6_line }}</td>
+                                <td>{{ item.res_4_line }}</td>
+                                <td>{{ item.resort_001 }}</td>
+                                <td>{{ item.res_total }}</td>
+                                <td>{{ item.t_o }}</td>
+                                <td>{{ item.percent_of_to }}%</td>
+                                <td>{{ item.previous_date }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}
+
+{% block jsscript %}
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
+    <script src="{% static 'js/my_scripts.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            function ajax_setup(e) {
+                e.preventDefault();
+                var shop = $('#shop-input').val();
+
+                $.ajax({
+                    method: 'GET',
+                    url: $(this).attr('href'),
+                    data: {
+                        'shop': shop
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        $("#table_id tbody").remove();
+                        for (var i = 0; i < data.elements.length; i++) {
+                            var table_row = '<tbody><tr>' +
+                                '<td class="util-table">' + data.elements[i].shop + '</td>' +
+                                '<td>' + data.elements[i].date_inv + '</td>' +
+                                '<td class="util-table">' + data.elements[i].vscro + '</td>' +
+                                '<td>' + data.elements[i].type_inv + '</td>' +
+                                '<td class="util-table">' + data.elements[i].dm_shop + '</td>' +
+                                '<td class="util-table">' + data.elements[i].dm_shop_new + '</td>' +
+                                '<td class="util-table">' + data.elements[i].sv_shop + '</td>' +
+                                '<td>' + data.elements[i].res_main + '</td>' +
+                                '<td>' + data.elements[i].res_defect + '</td>' +
+                                '<td>' + data.elements[i].res_6_line + '</td>' +
+                                '<td>' + data.elements[i].res_4_line + '</td>' +
+                                '<td>' + data.elements[i].resort_001 + '</td>' +
+                                '<td>' + data.elements[i].res_total + '</td>' +
+                                '<td>' + data.elements[i].t_o + '</td>' +
+                                '<td>' + data.elements[i].percent_of_to + '%' + '</td>' +
+                                '<td>' + data.elements[i].previous_date +
+                                '</td></tr></tbody>';
+
+                            $('table').append(table_row);
+                        }
+                    }
+                });
+            }
+
+            $('#search-shop').click(ajax_setup);
+        })
+    </script>
+{% endblock %}

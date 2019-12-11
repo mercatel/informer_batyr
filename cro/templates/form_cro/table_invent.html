@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+        <br>
+            <div class="row">
+                <div class="col-6">
+                    <form action="" method="post" class="form-group text-center">{% csrf_token %}
+                        <table class="table table-bordered table-dark">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Данные</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in form %}
+                                <tr>
+                                    <th scope="row" class="col-lg-4" style="text-align: left">{{ item.label }}</th>
+                                    <td style="text-align: left">{{ item }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-4">
+                    <table class="table table-bordered table-dark">
+                        <thead>
+                        <tr>
+                            <th colspan="2">Результаты Инвентаризации</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">Итого:</th>
+                            <td id="result"></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Итого % от ТО:</th>
+                            <td id="precent_to"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}
+{% block jsscript %}
+    <script type="text/javascript">
+        jQuery('document').ready(function () {
+            jQuery('input').on('keyup', function () {
+                var main, defect, line6, line4, resort, to, result, res_precent_to;
+                main = parseInt(jQuery('#id_res_main').val());
+                defect = parseInt(jQuery('#id_res_defect').val());
+                line6 = parseInt(jQuery('#id_res_6_line').val());
+                line4 = parseInt(jQuery('#id_res_4_line').val());
+                resort = parseInt(jQuery('#id_resort_001').val());
+                to = parseInt(jQuery('#id_t_o').val());
+                result = main + defect + line6 + line4 + resort;
+                res_precent_to = (result * 100 / to).toFixed(2);
+
+                jQuery('#result').html(result);
+                jQuery('#precent_to').html(res_precent_to + "%");
+
+            })
+
+        })
+    </script>
+{% endblock %}

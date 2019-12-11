@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container" style="width: 300px">
+        <form class="form-signin" action="{% url 'login_url' %}" method="post">{% csrf_token %}
+
+            <label for="username" class="sr-only">Логин</label>
+            <input id="username" class="form-control" placeholder="Логин" {{ form.username }}
+
+
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input id="inputPassword" class="form-control" placeholder="Пароль" {{ form.password }}
+
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2019</p>
+        </form>
+    </div>
+
+{% endblock %}

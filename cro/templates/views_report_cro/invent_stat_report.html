@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-8">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input id="shop-input" class="form-control mr-sm-2" type="search" placeholder="Введите магазин"
+                               aria-label="Search">
+                        <a href="{% url 'search_shop_url' %}" id="search-shop">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                        </a>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel</button>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-10">
+                    <table id="table_id" class="table table-bordered table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Магазин</th>
+                            <th scope="col">Дата</th>
+                            <th scope="col">ВСКРО</th>
+                            <th scope="col">Формат</th>
+                            <th scope="col">Формат факт</th>
+                            <th scope="col">Кол-во СКРО</th>
+                            <th scope="col">Кол-во МОП</th>
+                            <th scope="col">Факт Кол-во МОП</th>
+                            <th scope="col">Рас-ия МОП</th>
+                            <th scope="col">Время окончания инвент</th>
+                        </tr>
+                        </thead>
+
+
+                        <tbody>
+                        {% for item in model %}
+                            <tr>
+                                <td class="util-table">{{ item.shop }}</td>
+                                <td>{{ item.date_inv }}</td>
+                                <td class="util-table">{{ item.vscro }}</td>
+                                <td>{{ item.format_shop }}</td>
+                                <td>{{ item.fact_format }}</td>
+                                <td>{{ item.qky_scro }}</td>
+                                <td>{{ item.qky_mop }}</td>
+                                <td>{{ item.fact_qky_mop }}</td>
+                                <td>{{ item.diver_qky_mop }}</td>
+                                <td>{{ item.time_end }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}
+
+{% block jsscript %}
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
+    <script src="{% static 'js/my_scripts.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            function ajax_setup(e) {
+                e.preventDefault();
+                var shop = $('#shop-input').val();
+
+                $.ajax({
+                    method: 'GET',
+                    url: $(this).attr('href'),
+                    data: {
+                        'shop': shop
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        $("#table_id tbody").remove();
+                        for (var i = 0; i < data.elements.length; i++) {
+                            var table_row = '<tbody>' +
+                                '<tr><td class="util-table">' + data.elements[i].shop +
+                                '</td><td>' + data.elements[i].date_inv +
+                                '</td><td class="util-table">' + data.elements[i].vscro +
+                                '</td><td>' + data.elements[i].format_shop +
+                                '</td><td>' + data.elements[i].fact_format +
+                                '</td><td>' + data.elements[i].qky_scro +
+                                '</td><td>' + data.elements[i].qky_mop +
+                                '</td><td>' + data.elements[i].fact_qky_mop +
+                                '</td><td>' + data.elements[i].diver_qky_mop +
+                                '</td><td>' + data.elements[i].time_end.substring(0, 5) +
+                                '</td></tr>' +
+                                '</tbody>';
+
+                            $('table').append(table_row);
+                        }
+                    }
+                });
+            }
+
+            $('#search-shop').click(ajax_setup);
+        })
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10">
+                <table class="table table-bordered" style="background-color: whitesmoke">
+                    <thead>
+                    <tr>
+                        <th class="fon_grey">Результат Инвентаризации</th>
+                        <td class="fon_grey" style="text-align: left"></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row" class="col-lg-5" style="text-align: left">Супервайзер</th>
+                        <td style="text-align: left">{{ tabinv.sv_shop }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">ДМ</th>
+                        <td style="text-align: left">{{ tabinv.dm_shop }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">ДМ принимающий</th>
+                        <td style="text-align: left">{{ tabinv.dm_shop_new }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Магазин</th>
+                        <td style="text-align: left">{{ tabinv.shop }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Дата инвентаризации</th>
+                        <td style="text-align: left">{{ tabinv.date_inv }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Результат основного места хранения
+                        </th>
+                        <td style="text-align: left">{{ tabinv.res_main }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Результат Зоны Брака</th>
+                        <td style="text-align: left">{{ tabinv.res_defect }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">4 линии</th>
+                        <td style="text-align: left">{{ tabinv.res_4_line }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4 " style="text-align: left">Баланс локалок(6 линии)</th>
+                        <td style="text-align: left">{{ tabinv.res_6_line }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Пересортици(1ый счет)</th>
+                        <td style="text-align: left">{{ tabinv.resort_001 }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left; background-color: darkgrey ">Итого:
+                        </th>
+                        <td style="text-align: left; background-color: darkgrey">{{ tabinv.res_total }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">ТО за межинвент период</th>
+                        <td style="text-align: left">{{ tabinv.t_o }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">% от ТО</th>
+                        <td style="text-align: left; background-color: #ffdf7e">{{ tabinv.percent_of_to }} %</td>
+                    </tr>
+                    <tr>
+                        <th scope="row" class="col-lg-4" style="text-align: left">Дата предидущей инвентаризации</th>
+                        <td style="text-align: left">{{ tabinv.previous_date }}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

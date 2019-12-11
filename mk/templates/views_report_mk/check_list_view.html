@@ -1,0 +1,530 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <form action="" method="post" class="checklistmk-group text-center">
+                        <table class="table table-bordered-color" style="text-align: left">
+                            <thead>
+                            <tr>
+                                <th class="fon_grey" scope="col">Чек-лист проверки магазинов</th>
+                                <th class="fon_grey" scope="col">Магазин №</th>
+                                <th class="fon_grey" scope="col">СККРО</th>
+                                <th class="fon_grey" scope="col">ДМ</th>
+                                <th class="fon_grey" scope="col">СВ</th>
+                            </tr>
+                            </thead>
+                            <thead>
+                            <tr>
+                                <th class="fon_grey" scope="col"></th>
+                                <th scope="col">{{ checklistmk.shop }}</th>
+                                <th scope="col">{{ checklistmk.skkro }}</th>
+                                <th scope="col">{{ checklistmk.dm_shop }}</th>
+                                <th scope="col">{{ checklistmk.sv_shop }}</th>
+                            </tr>
+                            </thead>
+
+                        </table>
+
+
+                        <table class="table table-bordered-color" style="text-align: left">
+                            <thead>
+                            <tr>
+                                <th class="fon_grey" scope="col">#</th>
+                                <th class="fon_grey" scope="col">Область проверки</th>
+                                <th class="fon_grey" scope="col">SKU</th>
+                                <th class="fon_grey" scope="col">Коментарии</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th class="fon_grey" scope="col">1</th>
+                                <td colspan="4" class="fon_grey">Проверка прилегающей территории и входной группы.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1.1</th>
+                                <td>Проверка прилегающей территории на санитарное состояние: грязно (листва, окурки,
+                                    мусор, снег). Не ведутся ремонтные работы (ямы, разбитый асфальт). В зимний период:
+                                    не очищаются от снега и не посыпаются реагентами или песком дорожки и подходы к
+                                    магазину, крыльцо, ступеньки. Урны у входа полные мусора, контейнеры для отходов
+                                    грязные, переполненные баки мусора, вывозятся не регулярно
+                                </td>
+                                <td>{{ checklistmk.p1_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p1_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1.2</th>
+                                <td>Санитарное состояние входной группы (грязь, внешние стены и окна – грязные,
+                                    разрисованные, сломана обшивка, отсутствует закрепленный коврик, отсутствуют ручки
+                                    на входной двери, не работает доводчик на входной двери, не работает тепловая завеса
+                                    (заявка отсутствует, истек срок устранения проблемы). Проверка наличия посторонних
+                                    объявлений на входной двери магазина. Наличие посторонних объявлений, рекламы.
+                                </td>
+                                <td>{{ checklistmk.p1_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p1_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1.3</th>
+                                <td>Наличие значка о запрете курения на входной двери магазина. Отсутствие курящих на
+                                    эстакаде магазина. Курение в магазине запрещено!
+                                </td>
+                                <td>{{ checklistmk.p1_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p1_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">2</th>
+                                <td colspan="4" class="fon_grey">Реализация товара с истекшим сроком годности</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2.1</th>
+                                <td>Количество единиц и сумма выявленного товара истекшим сроком годности (SKU,
+                                    количество позиций, сумма).
+                                </td>
+                                <td>{{ checklistmk.p2_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p2_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row"></th>
+                                <td class="table-secondary fon_grey"></td>
+                                <td th class="fon_grey" style="text-align: right">{{ checklistmk.p2_sum.label }}</td>
+                                <td>{{ checklistmk.p2_sum|default_if_none:"" }} руб.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2.2</th>
+                                <td>Ежедневный перевод брака ФРЕШ, ФРОВ и торты в программе из основной зоны в зону
+                                    брака.
+                                </td>
+                                <td>{{ checklistmk.p2_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p2_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">3</th>
+                                <td colspan="4" class="fon_grey">Реализация бракованного товара (характер брака)</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3.1</th>
+                                <td>Проверка на наличие бракованного товара в торговом зале: с признаками порчи, не
+                                    товарного вида (порвана упаковка, разваккум, дефростация, бомбаж, плесень, гниль,
+                                    увядание, расфасована упаковка производителя) (SKU, количество позиций).
+                                </td>
+                                <td>{{ checklistmk.p3_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p3_1comment|default_if_none:"" }}</td>
+                            </tr>
+
+
+                            <tr>
+                                <th class="fon_grey" scope="row">4</th>
+                                <td colspan="4" class="fon_grey">Не насыщенная выкладка товара</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4.1</th>
+                                <td>ООS (Out-of-stock). Отсутствие товара / в торговом зале / в подсобных помещениях /
+                                    товар приехал не менее 2-х часов назад (SKU, количество позиций, сумма).
+                                </td>
+                                <td>{{ checklistmk.p4_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p4_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">5</th>
+                                <td colspan="4" class="fon_grey">Отсутствие ценников</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5.1</th>
+                                <td>Отсутствие ценников в торговом зале. SKU / штук</td>
+                                <td>{{ checklistmk.p5_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p5_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5.2</th>
+                                <td>Отсутствие ценников на акционный товар. SKU / штук</td>
+                                <td>{{ checklistmk.p5_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p5_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5.3</th>
+                                <td>Не соответствие ценника товару на полке ценнику, не соответствие цены - текущему
+                                    прайсу. SKU / штук
+                                </td>
+                                <td>{{ checklistmk.p5_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p5_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">6</th>
+                                <td colspan="4" class="fon_grey">Нарушений правил продажи алкоголя и табачной
+                                    продукции
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6.1</th>
+                                <td>Отсутствие акцизной марки, маркировки</td>
+                                <td>{{ checklistmk.p6_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p6_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6.2</th>
+                                <td>Не соответствие ценников на алкоголь и табачную продукцию</td>
+                                <td>{{ checklistmk.p6_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p6_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6.2.2</th>
+                                <td>Отсутствие ценников на алкоголь и табачную продукцию</td>
+                                <td>{{ checklistmk.p6_2_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p6_2_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6.3</th>
+                                <td>Проверка сопроводительных документов на алкогольную продукцию, ошибки заполнения,
+                                    порядок хранения документов. Проверка от 10 до 20 позиций.
+                                </td>
+                                <td>{{ checklistmk.p6_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p6_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6.4</th>
+                                <td>Приемка алкогольной продукции в программе ЕГАИС.</td>
+                                <td>{{ checklistmk.p6_4|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p6_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">7</th>
+                                <td colspan="4" class="fon_grey">Наличие очередей</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7.1</th>
+                                <td>Более 5 покупателей да/нет (касса №, время)</td>
+                                <td>{{ checklistmk.p7_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p7_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7.2</th>
+                                <td>Обслуживание по любимой карте (Ф.И.О. кассира, время обслуживания).</td>
+                                <td>{{ checklistmk.p7_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p7_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7.3</th>
+                                <td>Обслуживание по подарочной карте (Ф.И.О. кассира, время обслуживания).</td>
+                                <td>{{ checklistmk.p7_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p7_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7.4</th>
+                                <td>Проговаривание алгоритма обслуживания, не вежливое обслуживание покупателя (Ф.И.О.
+                                    сотрудника, время)
+                                </td>
+                                <td>{{ checklistmk.p7_4|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p7_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">8</th>
+                                <td colspan="4" class="fon_grey">Отсутствие обязательной информации для покупателей о
+                                    товаре
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.1</th>
+                                <td>- без даты выработки / количество наименований</td>
+                                <td>{{ checklistmk.p8_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p8_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.2</th>
+                                <td>- без маркировочного ярлыка / количество наименований</td>
+                                <td>{{ checklistmk.p8_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p8_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.3</th>
+                                <td>- без указания сроков реализации / количество наименований</td>
+                                <td>{{ checklistmk.p8_3 |default_if_none:""}}</td>
+                                <td>{{ checklistmk.p8_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.4</th>
+                                <td>{- без этикет-ценника / количество наименований</td>
+                                <td>{{ checklistmk.p8_4|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p8_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.5</th>
+                                <td>- без перевода на русский язык / количество наименований</td>
+                                <td>{{ checklistmk.p8_5|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p8_5comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.6</th>
+                                <td>- не соответствие обязательной информации на маркировки товару, этикет-ценнике /
+                                    количество наименований
+                                </td>
+                                <td>{{ checklistmk.p8_6 |default_if_none:""}}</td>
+                                <td>{{ checklistmk.p8_6comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">8.7</th>
+                                <td>- не соблюдение сроков фасовки весового товара / количество нарушений</td>
+                                <td>{{ checklistmk.p8_7|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p8_7comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">9</th>
+                                <td colspan="4" class="fon_grey">Нарушение требований санитарных норм и правил:</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.1</th>
+                                <td>Соблюдение ротации в торговом зале / в подсобном помещении.</td>
+                                <td>{{ checklistmk.p9_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.2</th>
+                                <td>Соблюдение товарного соседства.</td>
+                                <td>{{ checklistmk.p9_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.3</th>
+                                <td>Соблюдение температурного режима.</td>
+                                <td>{{ checklistmk.p9_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.4</th>
+                                <td>Хранение товара на полу (без поддонов).</td>
+                                <td>{{ checklistmk.p9_4 |default_if_none:""}}</td>
+                                <td>{{ checklistmk.p9_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5</th>
+                                <td>Санитарное состояние инвентаря, витрины, вытяжки печей, холодильного оборудования,
+                                    рабочего места, торгового зала, подсобного помещения.
+                                </td>
+                                <td>{{ checklistmk.p9_5|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.1</th>
+                                <td>Наличие психометрических гигрометров в местах продажи хлебной продукции, овощей и
+                                    фруктов.
+                                </td>
+                                <td>{{ checklistmk.p9_5_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.2</th>
+                                <td>Наличие дез.раствора (КПП, фасовка, уборные), инструкции ее применения.
+                                    применения.
+                                </td>
+                                <td>{{ checklistmk.p9_5_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.3</th>
+                                <td>Наличие разделочных досок, ножей (деликатесный отдел)</td>
+                                <td>{{ checklistmk.p9_5_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.4</th>
+                                <td>Наличие раздевалок с местом хранения спецодежды для сотрудников магазина.</td>
+                                <td>{{ checklistmk.p9_5_4|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.5</th>
+                                <td>Проверка холодильного оборудования на его заполнение и санитарное состояние.</td>
+                                <td>{{ checklistmk.p9_5_5|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_5comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.6</th>
+                                <td>Заполнение мусорных баков, урн магазина, своевременный вывоз мусора (не опускается
+                                    заполнение мусорного бака или урны более 2/3 от общего объема).
+                                </td>
+                                <td>{{ checklistmk.p9_5_6|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_6comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.7</th>
+                                <td>Проверка рабочих мест на момент приема пищи на рабочих местах сотрудников магазина,
+                                    исключая наличие личных вещей (сумки, сменной обуви, одежды)
+                                </td>
+                                <td>{{ checklistmk.p9_5_7|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_7comment |default_if_none:""}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.8</th>
+                                <td>Проверка правил продажи горячего хлеба (после приемки горячего хлеба, необходимо
+                                    переместить его в торговый зал в специально отведенное место на спецлотки, на местах
+                                    продажи обязательное находение щипцов, упаковки, маркировки (возможно нахождение на
+                                    упаковке, на ценнике).
+                                </td>
+                                <td>{{ checklistmk.p9_5_8|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_8comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.5.9</th>
+                                <td>Проверка продажи весовой рыбы: с/соленой, вяленой, х/копчения, г/копчения.
+                                    Запрещается продажа рыбы нарезанным куском.
+                                </td>
+                                <td>{{ checklistmk.p9_5_9|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_5_9comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.6</th>
+                                <td>Проведение влажной уборки торгового зала, подсобных помещений. Наличие листа отметок
+                                    проведенных влажных уборок.
+                                </td>
+                                <td>{{ checklistmk.p9_6 |default_if_none:""}}</td>
+                                <td>{{ checklistmk.p9_6comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.7</th>
+                                <td>Отсутствует зона брака в подсобном помещении, в холодильных камерах магазина.
+                                    Хранение бракованного товара с качественным товаром.
+                                </td>
+                                <td>{{ checklistmk.p9_7|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_7comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">9.8</th>
+                                <td>Внешний вид сотрудников рабочей смены: отсутствие бейджа, отсутствие головного
+                                    убора, фартука продавца деликатесного отдела, отсутствие перчаток, грязная одежда,
+                                    отсутствие сменной обуви.
+                                </td>
+                                <td>{{ checklistmk.p9_8|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p9_8comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">10</th>
+                                <td colspan="4" class="fon_grey">Проверка медицинских книжек сотрудников.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">10.1</th>
+                                <td>Проверка количества медицинских книжек согласно фактическому количеству сотрудников
+                                    в смене / по табелю.
+                                </td>
+                                <td>{{ checklistmk.p10_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p10_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">11</th>
+                                <td colspan="4" class="fon_grey">Ведение журналов</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.1</th>
+                                <td>Ведение журнала сроков годности товара (отсутствует, ведется/не ведется).</td>
+                                <td>{{ checklistmk.p11_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.2</th>
+                                <td>Ведение бракеражного журнала (отсутствует, ведется/не ведется).</td>
+                                <td>{{ checklistmk.p11_2|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_2comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.3</th>
+                                <td>Ведение журнала контроля температурного режима и влажности в холодильном
+                                    оборудования (отсутствует, ведется/не ведется).
+                                </td>
+                                <td>{{ checklistmk.p11_3|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_3comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.4</th>
+                                <td>Наличие Программы производственного контроля (проверка фактического адрес объекта,
+                                    Ф.И.О. действующего ДМ, хранение ППК).
+                                </td>
+                                <td>{{ checklistmk.p11_4|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_4comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.5</th>
+                                <td>Наличие обязательной информации на стенде для покупателей (наличие / отсутствие
+                                    брошюры: закона о защите прав потребителей, правила торговли, правила продажи
+                                    отдельных видов товаров/правила продажи алкогольной продукции, книги отзывов и
+                                    предложений, свидетельство и лицензия магазина, адреса и телефоны контролирующих
+                                    органов).
+                                </td>
+                                <td>{{ checklistmk.p11_5|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_5comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.6</th>
+                                <td>Ведение книги отзывов и предложений. Наличие ответа ДМ на отзывы покупателей.</td>
+                                <td>{{ checklistmk.p11_6|default_if_none:""}}</td>
+                                <td>{{ checklistmk.p11_6comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">11.7</th>
+                                <td>Ведение журнала дератизации и дезинсекции.</td>
+                                <td>{{ checklistmk.p11_7|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p11_7comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">12</th>
+                                <td>Прочее:</td>
+                                <td>{{ checklistmk.p12_1|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.p12_1comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th class="fon_grey" scope="row">13</th>
+                                <td colspan="4" class="fon_grey">Службы</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">--</th>
+                                <td><h5>Служба Торговли(SKU)</h5></td>
+                                <td>{{ checklistmk.sku|default_if_none:"" }}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13.1</th>
+                                <td>Служба Главного Инженера</td>
+                                <td>{{ checklistmk.service_ing|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.service_ing_comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13.2</th>
+                                <td>Служба Логистика</td>
+                                <td>{{ checklistmk.service_log|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.service_log_comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13.3</th>
+                                <td>СИТ</td>
+                                <td>{{ checklistmk.service_it|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.service_it_comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13.4</th>
+                                <td>Реклама и PR:</td>
+                                <td>{{ checklistmk.pr|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.pr_comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">13.5</th>
+                                <td>Договорной отдел</td>
+                                <td>{{ checklistmk.contract_department|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.contract_department_comment|default_if_none:"" }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="col">13.6</th>
+                                <td>Субаренда</td>
+                                <td>{{ checklistmk.subarenda|default_if_none:"" }}</td>
+                                <td>{{ checklistmk.subarenda_comment|default_if_none:"" }}</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-8">
+                    <form class="form-inline my-2 my-lg-0">
+                        <input id="shop-input" class="form-control mr-sm-2" type="search" placeholder="Введите магазин"
+                               aria-label="Search">
+                        <input id="sv-input" class="form-control mr-sm-2" type="search" placeholder="Супервайзер"
+                               aria-label="Search">
+
+                        <a href="{% url 'mk_search_shop_url' %}" id="search-shop">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                        </a>
+                    </form>
+                </div>
+                <div class="col-2">
+                    <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel</button>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10">
+                <table id="table_id" class="table table-bordered table-dark">
+                    <thead>
+                    <tr>
+                        <th scope="col">Магазин</th>
+                        <th scope="col">Адрес</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">СККРО</th>
+                        <th scope="col">ДМ</th>
+                        <th scope="col">СВ</th>
+                        <th scope="col">SKU</th>
+                        <th scope="col">Просрок</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Несоотв. ценн</th>
+                        <th scope="col">Отсутсв. ценн</th>
+                        <th scope="col">Прочее</th>
+                        <th scope="col">Чек-лист</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in model %}
+                        <tr>
+                            <td class="util-table">{{ item.shop }}</td>
+                            <td>{{ item.address_shop }}</td>
+                            <td class="util-table">{{ item.date }}</td>
+                            <td>{{ item.skkro }}</td>
+                            <td>{{ item.dm_shop }}</td>
+                            <td>{{ item.sv_shop }}</td>
+                            <td>{{ item.sku }}</td>
+                            <td>{{ item.p2_1 }}</td>
+                            <td>{{ item.p2_sum }}</td>
+                            <td>{{ item.dis_price }}</td>
+                            <td>{{ item.lack_price }}</td>
+                            <td>{{ item.etc }}</td>
+                            <td><a href="{{ item.get_absolute_url }}">Чек-лист</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}
+
+{% block jsscript %}
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
+    <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
+    <script src="{% static 'js/my_scripts.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            function ajax_setup(e) {
+                e.preventDefault();
+                var shop = $('#shop-input').val();
+                var sv = $('#sv-input').val();
+
+                $.ajax({
+                    method: 'GET',
+                    url: $(this).attr('href'),
+                    data: {
+                        'shop': shop,
+                        'sv': sv
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        $("#table_id tbody").remove();
+                        for (var i = 0; i < data.elements.length; i++) {
+                            var table_row = '<tbody><tr>' +
+                                '<td class="util-table">' + data.elements[i].shop + '</td>' +
+                                '<td>' + data.elements[i].address_shop + '</td>' +
+                                '<td class="util-table">' + formatdate_dd_mm_yy(data.elements[i].date) + '</td>' +
+                                '<td>' + data.elements[i].skkro + '</td>' +
+                                '<td>' + data.elements[i].dm_shop + '</td>' +
+                                '<td>' + data.elements[i].sv_shop + '</td>' +
+                                '<td>' + (data.elements[i].sku || '') + '</td>' +
+                                '<td>' + (data.elements[i].p2_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p2_sum || '') + '</td>' +
+                                '<td>' + (data.elements[i].dis_price || '') + '</td>' +
+                                '<td>' + (data.elements[i].lack_price || '') + '</td>' +
+                                '<td>' + data.elements[i].etc + '</td>' +
+                                '<td class="util-table"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
+                                '</tr></tbody>';
+                            $('#table_id').append(table_row);
+                        }
+
+
+                    }
+                });
+            }
+
+            $('#search-shop').click(ajax_setup);
+        })
+
+
+    </script>
+{% endblock %}
