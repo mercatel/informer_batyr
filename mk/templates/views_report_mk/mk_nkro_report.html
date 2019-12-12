@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -46,7 +48,7 @@
                                 <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel
                                 </button>
                             </div>
-                            <table id="table_sv_id" class="table table-bordered table-dark">
+                            <table id="table_sv_id" class="table table-bordered table-dark table_sort">
                                 <thead>
                                 <tr>
                                     <th scope="col">СВ</th>
@@ -85,7 +87,7 @@
                                     Excel
                                 </button>
                             </div>
-                            <table id="table_dm_id" class="table table-bordered table-dark">
+                            <table id="table_dm_id" class="table table-bordered table-dark table_sort">
                                 <thead>
                                 <tr>
                                     <th scope="col">ДМ</th>
@@ -132,7 +134,7 @@
                                     Excel
                                 </button>
                             </div>
-                            <table id="table_shop_id" class="table table-bordered table-dark">
+                            <table id="table_shop_id" class="table table-bordered table-dark table_sort">
                                 <thead>
                                 <tr>
                                     <th scope="col">Магазин</th>
@@ -167,6 +169,7 @@
     <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
     <script src="{% static 'js/my_scripts.js' %}"></script>
     <script src="{% static 'js/nkro.js' %}"></script>
+    <script src="{% static 'js/table-sort.js' %}"></script>
     <script>
         $(document).ready(function () {
             var start = "2018-01-01";

@@ -1,0 +1,34 @@
+.table_sort table {
+    border-collapse: collapse;
+}
+
+.table_sort th {
+    cursor: pointer;
+}
+
+.table_sort td,
+.table_sort th {
+
+}
+
+.table_sort tbody tr:nth-child(even) {
+}
+
+th.sorted[data-order="1"],
+th.sorted[data-order="-1"] {
+    position: relative;
+}
+
+th.sorted[data-order="1"]::after,
+th.sorted[data-order="-1"]::after {
+    right: 8px;
+    position: absolute;
+}
+
+th.sorted[data-order="-1"]::after {
+	content: "▼"
+}
+
+th.sorted[data-order="1"]::after {
+	content: "▲"
+}
