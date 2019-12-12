@@ -1,4 +1,11 @@
 $('#btn-export').click(function () {
+    $('#table_id').table2excel({
+        exclude: '.noExport',
+        name: 'My doc',
+        filename: 'Table_exp'
+    });
+});
+$('#btn-export').click(function () {
     $('#table_sv_id').table2excel({
         exclude: '.noExport',
         name: 'My doc',
