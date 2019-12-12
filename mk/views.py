@@ -79,8 +79,6 @@ def mk_nkro_report(request):
 
         data_shop.update(res_shop)
 
-    print(data_shop)
-
     #
     # по СВ.........................................
     #
@@ -107,8 +105,6 @@ def mk_nkro_report(request):
                       "etc": etc},
         }
         data.update(res)
-
-    # print(data)
 
     return render(request, 'views_report_mk/mk_nkro_report.html',
                   context={'model': obj, 'data': data, 'data_by_dm': data_shop})
@@ -171,6 +167,7 @@ def search_date(request):
 
         # Отчет по СВ******************************
         sv = Supervisor.objects.all()
+        itog_sku = 0
         for item_sv in sv:
             filter_sv = obj.filter(sv_shop=item_sv)
             count = 1
@@ -180,6 +177,7 @@ def search_date(request):
             lack_price = 0
             dis_price = 0
             etc = 0
+            itog_sku += sku
 
             for item_report in filter_sv:
                 count += 1
@@ -193,7 +191,8 @@ def search_date(request):
             res = {"sv": str(item_sv), "sku": str(sku), "p2_1": str(p2_1), "p2_sum": str(p2_sum),
                    "lack_price": str(lack_price),
                    "dis_price": str(dis_price),
-                   "etc": str(etc)}
+                   "etc": str(etc),
+                   }
             data_sv.append(res)
 
         context = {

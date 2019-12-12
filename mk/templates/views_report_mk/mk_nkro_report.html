@@ -81,7 +81,8 @@
                     <div class="row">
                         <div class="col-sm-10">
                             <div class="col-2">
-                                <button id="btn-export_dm" class="btn btn-success" style="float: right">Загрузить в Excel
+                                <button id="btn-export_dm" class="btn btn-success" style="float: right">Загрузить в
+                                    Excel
                                 </button>
                             </div>
                             <table id="table_dm_id" class="table table-bordered table-dark">
@@ -127,7 +128,8 @@
                     <div class="row">
                         <div class="col-sm-10">
                             <div class="col-2">
-                                <button id="btn-export_shop" class="btn btn-success" style="float: right">Загрузить в Excel
+                                <button id="btn-export_shop" class="btn btn-success" style="float: right">Загрузить в
+                                    Excel
                                 </button>
                             </div>
                             <table id="table_shop_id" class="table table-bordered table-dark">
@@ -164,69 +166,28 @@
     <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
     <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
     <script src="{% static 'js/my_scripts.js' %}"></script>
+    <script src="{% static 'js/nkro.js' %}"></script>
     <script>
         $(document).ready(function () {
+            var start = "2018-01-01";
+            var end = "2050-01-01";
+            var url = $('#search-period').attr('href');
+
+            console.log(start);
+            console.log(end);
+            ajax_filter(start, end, url);
+
+
             function ajax_setup(e) {
                 e.preventDefault();
                 var start = formatdate_yy_mm_dd($('#start-period-input').val());
                 var end = formatdate_yy_mm_dd($('#end-period-input').val());
+                var url = $(this).attr('href');
                 console.log(start);
                 console.log(end);
-                $.ajax({
-                    method: 'GET',
-                    url: $(this).attr('href'),
-                    data: {
-                        'start': start,
-                        'end': end,
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                        $("#table_sv_id tbody").remove();
-                        $("#table_dm_id tbody").remove();
-                        $("#table_shop_id tbody").remove();
+                ajax_filter(start, end, url);
 
-                        for (var j = 0; j < data.onsv.length; j++) {
-                            var table_row_sv = '<tbody><tr>' +
-                                '<td class="util-table">' + data.onsv[j].sv + '</td>' +
-                                '<td>' + data.onsv[j].sku + '</td>' +
-                                '<td>' + data.onsv[j].p2_1 + '</td>' +
-                                '<td>' + data.onsv[j].p2_sum + '</td>' +
-                                '<td>' + data.onsv[j].lack_price + '</td>' +
-                                '<td>' + data.onsv[j].dis_price + '</td>' +
-                                '<td>' + data.onsv[j].etc + '</td>' +
-                                '</tr></tbody>';
 
-                            $('#table_sv_id').append(table_row_sv);
-                        }
-
-                        for (var i = 0; i < data.ondm.length; i++) {
-                            var table_row_dm = '<tbody><tr>' +
-                                '<td>' + data.ondm[i].dm + '</td>' +
-                                '<td>' + data.ondm[i].shop + '</td>' +
-                                '<td>' + data.ondm[i].address + '</td>' +
-                                '<td>' + formatdate_dd_mm_yy(data.ondm[i].date) + '</td>' +
-                                '<td>' + data.ondm[i].sv + '</td>' +
-                                '<td>' + data.ondm[i].sum_scu + '</td>' +
-                                '<td>' + data.ondm[i].sum_p2_1 + '</td>' +
-                                '<td>' + data.ondm[i].sum_summ + '</td>' +
-                                '<td>' + data.ondm[i].sum_dis_price + '</td>' +
-                                '<td>' + data.ondm[i].sum_lack_price + '</td>' +
-                                '<td>' + data.ondm[i].sum_etc + '</td>' +
-                                '</tr></tbody>';
-                            $('#table_dm_id').append(table_row_dm);
-
-                        }
-                        for (var i = 0; i < data.ondm.length; i++) {
-                            var table_row_shop = '<tbody><tr>' +
-                                '<td>' + data.ondm[i].shop + '</td>' +
-                                '<td>' + data.ondm[i].sum_scu + '</td>' +
-                                '</tr></tbody>';
-                            $('#table_shop_id').append(table_row_shop);
-
-                        }
-                    }
-                });
             }
 
             $('#search-period').click(ajax_setup);
