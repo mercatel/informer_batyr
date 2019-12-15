@@ -2,6 +2,8 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+    <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+    <link rel="stylesheet" href="{% static 'moduls/dist/css/bootstrap/zebra_datepicker.min.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -9,14 +11,19 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-8">
+
                     <form class="form-inline my-2 my-lg-0">
-                        <input id="start-period-input" class="form-control mr-sm-2" type="search"
-                               placeholder="Начало периода"
-                               aria-label="Search">
+                        <div>
+                            <input id="start-period-input" class="form-control mr-sm-2" type="search"
+                                   placeholder="Начало периода"
+                                   aria-label="Search">
+                        </div>
                         <h1> - </h1>
-                        <input id="end-period-input" class="form-control mr-sm-2" type="search"
-                               placeholder="Конец периода"
-                               aria-label="Search">
+                        <div>
+                            <input id="end-period-input" class="form-control mr-sm-2" type="search"
+                                   placeholder="Конец периода"
+                                   aria-label="Search">
+                        </div>
 
                         <a href="{% url 'mk_search_sv_url' %}" id="search-period">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
@@ -166,8 +173,30 @@
     <script src="{% static 'js/my_scripts.js' %}"></script>
     <script src="{% static 'js/nkro.js' %}"></script>
     <script src="{% static 'js/table-sort.js' %}"></script>
+    <script>window.jQuery || document.write('<script src="path/to/jquery-3.3.1.js"><\/script>')</script>
+    <script src="{% static 'moduls/dist/zebra_datepicker.min.js' %}"></script>
     <script>
         $(document).ready(function () {
+
+
+            $('#start-period-input').Zebra_DatePicker({
+                format: 'd.m.Y',
+                icon_position: "right",
+                first_day_of_week: 1,
+                icon_margin: 30,
+
+                pair: $('#end-period-input')
+            });
+
+            $('#end-period-input').Zebra_DatePicker({
+                format: 'd.m.Y',
+                icon_position: "right",
+                first_day_of_week: 1,
+                icon_margin: 30,
+                direction: 1,
+            });
+
+
             var start = "2018-01-01";
             var end = "2050-01-01";
             var url = $('#search-period').attr('href');

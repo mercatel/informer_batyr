@@ -55,9 +55,7 @@ class TabInv(models.Model):
     percent_of_to = models.DecimalField(max_digits=9, decimal_places=2, default=None, verbose_name="% от ТО")
     resort_001 = models.DecimalField(max_digits=9, decimal_places=2, default=None, verbose_name="001 счет")
     previous_date = models.CharField(max_length=40, default=None, verbose_name="Дата пред. инвент")  # АВТОМАТИЗИРОВАТЬ
-    time_end = models.TimeField(auto_now_add=True,
-                                auto_now=False,
-                                verbose_name="Время завершение инвент")  # автодобовление времени в таблицу(когда созданно)
+    time_end = models.CharField(max_length=50, blank=True, default=0, verbose_name="Время окончания инвент")
 
     class Meta:
         verbose_name = "Таблица инв. СКРО"
@@ -67,6 +65,7 @@ class TabInv(models.Model):
         return "%s" % self.shop
 
     def save(self, *args, **kwargs):
+        self.time_end = datetime.datetime.today().strftime("%H:%M")
         self.res_total = self.res_4_line + self.res_6_line + self.res_defect + self.res_main + self.resort_001
         if not self.dm_shop_new:
             self.type_inv = "плановая"

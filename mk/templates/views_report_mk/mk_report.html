@@ -42,6 +42,10 @@
                 <div class="tab-pane fade show active" id="mk_report" role="tabpanel" aria-labelledby="mk_report-tab">
                     <div class="row">
                         <div class="col-sm-10">
+                         <div class="col-2">
+                                <button id="btn-export_mk_report" class="btn btn-success" style="float: right">Загрузить в Excel
+                                </button>
+                            </div>
                             <table id="table_mk_report" class="table table-bordered table-dark table_sort">
                                 <thead>
                                 <tr>
@@ -57,7 +61,7 @@
                                     <th scope="col">Несоотв. ценн</th>
                                     <th scope="col">Отсутсв. ценн</th>
                                     <th scope="col">Прочее</th>
-                                    <th scope="col">Чек-лист</th>
+                                    <th class="noExport" scope="col">Чек-лист</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -75,7 +79,7 @@
                                         <td>{{ item.dis_price|default_if_none:"" }}</td>
                                         <td>{{ item.lack_price|default_if_none:"" }}</td>
                                         <td>{{ item.etc|default_if_none:"" }}</td>
-                                        <td><a href="{{ item.get_absolute_url }}">Чек-лист</a></td>
+                                        <td class="noExport"><a href="{{ item.get_absolute_url }}">Чек-лист</a></td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -88,6 +92,10 @@
                     <div>
                         <div class="row">
                             <div class="col-sm-10">
+                             <div class="col-2">
+                                <button id="btn-export_report_etc" class="btn btn-success" style="float: right">Загрузить в Excel
+                                </button>
+                            </div>
                                 <table id="table_mk_report_etc" class="table table-bordered table-dark table_sort">
                                     <thead>
                                     <tr>
@@ -138,7 +146,7 @@
                                         <th scope="col">Заполнение мусорных баков, урн магазина, своевременный вывоз
                                             мусора
                                         </th>
-                                        <th scope="col">Чек-лист</th>
+                                        <th class="noExport" scope="col">Чек-лист</th>
                                     </tr>
                                     </thead>
 
@@ -188,7 +196,7 @@
                                             <td>{{ item.p11_5|default_if_none:"" }}</td>
                                             <td>{{ item.p12_1|default_if_none:"" }}</td>
                                             <td>{{ item.p9_5_6|default_if_none:"" }}</td>
-                                            <td class="util-table"><a
+                                            <td class="noExport"><a
                                                     href="{{ item.get_absolute_url|default_if_none:"" }}">Чек-лист</a>
                                             </td>
                                         </tr>
@@ -259,12 +267,13 @@
                                 '<td>' + (data.elements[i].dis_price) + '</td>' +
                                 '<td>' + (data.elements[i].lack_price) + '</td>' +
                                 '<td>' + data.elements[i].etc + '</td>' +
-                                '<td class="util-table"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
+                                '<td class="noExport"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
                                 '</tr>';
                             $('#table_mk_report').append(table_row);
                         }
                         for (var i = 0; i < data.elements.length; i++) {
-                            var table_row = '<tr><td class="util-table">' + (data.elements[i].shop || '') + '</td>' +
+                            var table_row = '<tr>' +
+                                '<td class="util-table">' + (data.elements[i].shop || '') + '</td>' +
                                 '<td class="util-table">' + (data.elements[i].address_shop || '') + '</td>' +
                                 '<td>' + formatdate_dd_mm_yy(data.elements[i].date) + '</td>' +
                                 '<td>' + (data.elements[i].etc || '') + '</td>' +
@@ -306,7 +315,7 @@
                                 '<td>' + (data.elements[i].p11_5 || '') + '</td>' +
                                 '<td>' + (data.elements[i].p12_1 || '') + '</td>' +
                                 '<td>' + (data.elements[i].p9_5_6 || '') + '</td>' +
-                                '<td class="util-table"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
+                                '<td class="noExport"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
                                 '</tr>';
 
                             $('#table_mk_report_etc').append(table_row);

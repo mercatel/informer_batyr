@@ -15,4 +15,4 @@ class TableInvForm(forms.ModelForm):
         fields = ["sv_shop", "shop", "date_inv", "dm_shop", "dm_shop_new", "res_main", "res_defect", "res_6_line",
                   "res_4_line", "resort_001", "t_o", "vscro", "qky_scro", "fact_qky_mop", "qky_mop", "previous_date",
                   "fact_format"]
-        exclude = ["slug", "format_shop", "res_total", "type_inv", "percent_of_to", "diver_qky_mop", "coment"]
+        exclude = ["slug", "format_shop", "res_total", "type_inv", "percent_of_to", "diver_qky_mop", "coment", "time_end"]

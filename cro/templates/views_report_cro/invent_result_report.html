@@ -21,55 +21,115 @@
                     <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel</button>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-10">
-                    <table id="table_id" class="table table-bordered table-dark table_sort">
-                        <thead>
-                        <tr>
-                            <th scope="col">Магазин</th>
-                            <th scope="col">Дата</th>
-                            <th scope="col">ВСКРО</th>
-                            <th scope="col">Тип инв</th>
-                            <th scope="col">ДМ</th>
-                            <th scope="col">ДМ прин-ий</th>
-                            <th scope="col">СВ</th>
-                            <th scope="col">Осн.место хран.</th>
-                            <th scope="col">Зона Брака</th>
-                            <th scope="col">Бал.Лок</th>
-                            <th scope="col">4линия</th>
-                            <th scope="col">001 счет</th>
-                            <th scope="col">Итого</th>
-                            <th scope="col">TO</th>
-                            <th scope="col">% от ТО</th>
-                            <th scope="col">Дата пред.инвент</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for item in model %}
-                            <tr>
-                                <td class="util-table">{{ item.shop }}</td>
-                                <td>{{ item.date_inv }}</td>
-                                <td class="util-table">{{ item.vscro }}</td>
-                                <td>{{ item.type_inv }}</td>
-                                <td class="util-table">{{ item.dm_shop }}</td>
-                                <td class="util-table">{{ item.dm_shop_new }}</td>
-                                <td class="util-table">{{ item.sv_shop }}</td>
-                                <td>{{ item.res_main }}</td>
-                                <td>{{ item.res_defect }}</td>
-                                <td>{{ item.res_6_line }}</td>
-                                <td>{{ item.res_4_line }}</td>
-                                <td>{{ item.resort_001 }}</td>
-                                <td>{{ item.res_total }}</td>
-                                <td>{{ item.t_o }}</td>
-                                <td>{{ item.percent_of_to }}%</td>
-                                <td>{{ item.previous_date }}</td>
-                            </tr>
-                        {% endfor %}
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="cro_report-tab" data-toggle="tab" href="#cro_report" role="tab"
+                       aria-controls="cro_report" aria-selected="true">Результаты инвент</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="crostat_report-tab" data-toggle="tab" href="#crostat_report" role="tab"
+                       aria-controls="crostat_report" aria-selected="false">Статистика по кол-ву</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="cro_report" role="tabpanel" aria-labelledby="cro_report-tab">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <table id="table_inv_res" class="table table-bordered table-dark table_sort">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Магазин</th>
+                                    <th scope="col">Дата</th>
+                                    <th scope="col">ВСКРО</th>
+                                    <th scope="col">Тип инв</th>
+                                    <th scope="col">ДМ</th>
+                                    <th scope="col">ДМ прин-ий</th>
+                                    <th scope="col">СВ</th>
+                                    <th scope="col">Осн.место хран.</th>
+                                    <th scope="col">Зона Брака</th>
+                                    <th scope="col">Бал.Лок</th>
+                                    <th scope="col">4линия</th>
+                                    <th scope="col">001 счет</th>
+                                    <th scope="col">Итого</th>
+                                    <th scope="col">TO</th>
+                                    <th scope="col">% от ТО</th>
+                                    <th scope="col">Дата пред.инвент</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in model %}
+                                    <tr>
+                                        <td class="util-table">{{ item.shop }}</td>
+                                        <td>{{ item.date_inv }}</td>
+                                        <td class="util-table">{{ item.vscro }}</td>
+                                        <td>{{ item.type_inv }}</td>
+                                        <td class="util-table">{{ item.dm_shop }}</td>
+                                        <td class="util-table">{{ item.dm_shop_new }}</td>
+                                        <td class="util-table">{{ item.sv_shop }}</td>
+                                        <td>{{ item.res_main }}</td>
+                                        <td>{{ item.res_defect }}</td>
+                                        <td>{{ item.res_6_line }}</td>
+                                        <td>{{ item.res_4_line }}</td>
+                                        <td>{{ item.resort_001 }}</td>
+                                        <td>{{ item.res_total }}</td>
+                                        <td>{{ item.t_o }}</td>
+                                        <td>{{ item.percent_of_to }}%</td>
+                                        <td>{{ item.previous_date }}</td>
+                                    </tr>
+                                {% endfor %}
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="crostat_report" role="tabpanel"
+                     aria-labelledby="crostat_report-tab">
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <table id="table_inv_stat" class="table table-bordered table-dark table_sort">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Магазин</th>
+                                        <th scope="col">Дата</th>
+                                        <th scope="col">ВСКРО</th>
+                                        <th scope="col">Формат</th>
+                                        <th scope="col">Формат факт</th>
+                                        <th scope="col">Кол-во СКРО</th>
+                                        <th scope="col">Кол-во МОП</th>
+                                        <th scope="col">Факт Кол-во МОП</th>
+                                        <th scope="col">Рас-ия МОП</th>
+                                        <th scope="col">Время окончания инвент</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    {% for item in model %}
+                                        <tr>
+                                            <td class="util-table">{{ item.shop }}</td>
+                                            <td>{{ item.date_inv }}</td>
+                                            <td class="util-table">{{ item.vscro }}</td>
+                                            <td>{{ item.format_shop }}</td>
+                                            <td>{{ item.fact_format }}</td>
+                                            <td>{{ item.qky_scro }}</td>
+                                            <td>{{ item.qky_mop }}</td>
+                                            <td>{{ item.fact_qky_mop }}</td>
+                                            <td>{{ item.diver_qky_mop }}</td>
+                                            <td>{{ item.time_end|truncatechars:6}}</td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
         </div>
     {% else %}
         <h1>Нет прав</h1>
