@@ -2,6 +2,8 @@
 {% load static %}
 {% block head %}
     <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+    <link rel="stylesheet" href="{% static 'moduls/dist/css/bootstrap/zebra_datepicker.min.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -12,8 +14,9 @@
                     <form class="form-inline my-2 my-lg-0">
                         <input id="shop-input" class="form-control mr-sm-2" type="search" placeholder="Введите магазин"
                                aria-label="Search">
-                        <input id="data-input" class="form-control mr-sm-2" type="search" placeholder="Дата проверки"
-                               aria-label="Search">
+                        <div><input id="data-input" class="form-control mr-sm-2" type="search"
+                                    placeholder="Дата проверки"
+                                    aria-label="Search"></div>
                         <input id="sv-input" class="form-control mr-sm-2" type="search" placeholder="Супервайзер"
                                aria-label="Search">
                         <a href="{% url 'mk_search_shop_url' %}" id="search-shop">
@@ -209,9 +212,19 @@
     <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
     <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
     <script src="{% static 'js/table-sort.js' %}"></script>
+    <script>window.jQuery || document.write('<script src="path/to/jquery-3.3.1.js"><\/script>')</script>
+    <script src="{% static 'moduls/dist/zebra_datepicker.min.js' %}"></script>
+
     <script src="{% static 'js/my_scripts.js' %}"></script>
     <script>
         $(document).ready(function () {
+            $('#data-input').Zebra_DatePicker({
+                format: 'd.m.Y',
+                icon_position: "right",
+                first_day_of_week: 1,
+                icon_margin: 30,
+            });
+
             function ajax_setup(e) {
                 e.preventDefault();
                 var shop = $('#shop-input').val();
