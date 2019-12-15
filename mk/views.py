@@ -114,7 +114,12 @@ def search_shop(request):
     if request.GET:
         shop = request.GET.get('shop')
         sv = request.GET.get('sv')
-        res_search = CheckListMK.objects.filter(shop__contains=shop, sv_shop__contains=sv).values()
+        date = request.GET.get('date')
+        if date == "--":
+            res_search = CheckListMK.objects.filter(shop__contains=shop, sv_shop__contains=sv).values()
+        else:
+            print("3. " + date)
+            res_search = CheckListMK.objects.filter(shop__contains=shop, sv_shop__contains=sv, date=date).values()
 
         context = {
             'elements': list(res_search)

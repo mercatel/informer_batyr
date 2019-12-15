@@ -58,6 +58,7 @@
 {% block jsscript %}
     <script type="text/javascript">
         jQuery('document').ready(function () {
+            $('input.datepicker').Zebra_DatePicker();
             jQuery('input').on('keyup', function () {
                 var main, defect, line6, line4, resort, to, result, res_precent_to;
                 main = parseInt(jQuery('#id_res_main').val());

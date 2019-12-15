@@ -12,60 +12,191 @@
                     <form class="form-inline my-2 my-lg-0">
                         <input id="shop-input" class="form-control mr-sm-2" type="search" placeholder="Введите магазин"
                                aria-label="Search">
+                        <input id="data-input" class="form-control mr-sm-2" type="search" placeholder="Дата проверки"
+                               aria-label="Search">
                         <input id="sv-input" class="form-control mr-sm-2" type="search" placeholder="Супервайзер"
                                aria-label="Search">
-
                         <a href="{% url 'mk_search_shop_url' %}" id="search-shop">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
                         </a>
+                        <a href="{% url 'mk_report_url' %}" id="s">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Сброс фильтра</button>
+                        </a>
                     </form>
                 </div>
-                <div class="col-2">
-                    <button id="btn-export" class="btn btn-success" style="float: right">Загрузить в Excel</button>
-                </div>
-
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-10">
-                <table id="table_id" class="table table-bordered table-dark table_sort">
-                    <thead>
-                    <tr>
-                        <th scope="col">Магазин</th>
-                        <th scope="col">Адрес</th>
-                        <th scope="col">Дата</th>
-                        <th scope="col">СККРО</th>
-                        <th scope="col">ДМ</th>
-                        <th scope="col">СВ</th>
-                        <th scope="col">SKU</th>
-                        <th scope="col">Просрок</th>
-                        <th scope="col">Сумма</th>
-                        <th scope="col">Несоотв. ценн</th>
-                        <th scope="col">Отсутсв. ценн</th>
-                        <th scope="col">Прочее</th>
-                        <th scope="col">Чек-лист</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for item in model %}
-                        <tr>
-                            <td class="util-table">{{ item.shop }}</td>
-                            <td>{{ item.address_shop }}</td>
-                            <td class="util-table">{{ item.date }}</td>
-                            <td>{{ item.skkro }}</td>
-                            <td>{{ item.dm_shop }}</td>
-                            <td>{{ item.sv_shop }}</td>
-                            <td>{{ item.sku }}</td>
-                            <td>{{ item.p2_1 }}</td>
-                            <td>{{ item.p2_sum }}</td>
-                            <td>{{ item.dis_price }}</td>
-                            <td>{{ item.lack_price }}</td>
-                            <td>{{ item.etc }}</td>
-                            <td><a href="{{ item.get_absolute_url }}">Чек-лист</a></td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="mk_report-tab" data-toggle="tab" href="#mk_report" role="tab"
+                       aria-controls="mk_report" aria-selected="true">Свод МК</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="mk_report_etc-tab" data-toggle="tab" href="#mk_report_etc" role="tab"
+                       aria-controls="mk_report_etc" aria-selected="false">Прочее</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="mk_report" role="tabpanel" aria-labelledby="mk_report-tab">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <table id="table_mk_report" class="table table-bordered table-dark table_sort">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Магазин</th>
+                                    <th scope="col">Адрес</th>
+                                    <th scope="col">Дата</th>
+                                    <th scope="col">СККРО</th>
+                                    <th scope="col">ДМ</th>
+                                    <th scope="col">СВ</th>
+                                    <th scope="col">SKU</th>
+                                    <th scope="col">Просрок</th>
+                                    <th scope="col">Сумма</th>
+                                    <th scope="col">Несоотв. ценн</th>
+                                    <th scope="col">Отсутсв. ценн</th>
+                                    <th scope="col">Прочее</th>
+                                    <th scope="col">Чек-лист</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in model %}
+                                    <tr>
+                                        <td class="util-table">{{ item.shop|default_if_none:"" }}</td>
+                                        <td>{{ item.address_shop|default_if_none:"" }}</td>
+                                        <td class="util-table">{{ item.date|default_if_none:"" }}</td>
+                                        <td>{{ item.skkro|default_if_none:"" }}</td>
+                                        <td>{{ item.dm_shop|default_if_none:"" }}</td>
+                                        <td>{{ item.sv_shop|default_if_none:"" }}</td>
+                                        <td>{{ item.sku|default_if_none:"" }}</td>
+                                        <td>{{ item.p2_1|default_if_none:"" }}</td>
+                                        <td>{{ item.p2_sum|default_if_none:"" }}</td>
+                                        <td>{{ item.dis_price|default_if_none:"" }}</td>
+                                        <td>{{ item.lack_price|default_if_none:"" }}</td>
+                                        <td>{{ item.etc|default_if_none:"" }}</td>
+                                        <td><a href="{{ item.get_absolute_url }}">Чек-лист</a></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="mk_report_etc" role="tabpanel"
+                     aria-labelledby="mk_report_etc-tab">
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <table id="table_mk_report_etc" class="table table-bordered table-dark table_sort">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Магазин</th>
+                                        <th scope="col">Адрес</th>
+                                        <th scope="col">Дата</th>
+                                        <th scope="col">Прочее</th>
+                                        <th scope="col">Про-ка прил. тер-рии</th>
+                                        <th scope="col">Сан. сост-ие вход. группы</th>
+                                        <th scope="col">Брак в ТЗ</th>
+                                        <th scope="col">Отс-вие товара (в ТЗ) OOS</th>
+                                        <th scope="col">Док-ты на алк.</th>
+                                        <th scope="col">алгоритм обсл-ия</th>
+                                        <th scope="col">Обс-ние по любимой карте</th>
+                                        <th scope="col">без даты выработки</th>
+                                        <th scope="col">без маркиров. ярлыка</th>
+                                        <th scope="col">без сроков реал-ции</th>
+                                        <th scope="col">без этикет-ценника</th>
+                                        <th scope="col">без перевода на рус. язык</th>
+                                        <th scope="col">не соот-вие обязательной инфо.</th>
+                                        <th scope="col">не соб-ние сроков фас. вес. товара</th>
+                                        <th scope="col">Не соб-ние ротации</th>
+                                        <th scope="col">товарное соседство</th>
+                                        <th scope="col">t-режима</th>
+                                        <th scope="col">Хранение товара</th>
+                                        <th scope="col">Сан. сос-ние инвентаря</th>
+                                        <th scope="col">Наличие гигрометров</th>
+                                        <th scope="col">Наличие дез. раствора</th>
+                                        <th scope="col">Наличие разделочных досок, ножей</th>
+                                        <th scope="col">Наличие раздевалок с местом хранения спецодежды</th>
+                                        <th scope="col">Проверка правил продажи горячего хлеба</th>
+                                        <th scope="col">Проверка продажи весовой рыбы</th>
+                                        <th scope="col">Проверка холодильного оборудования на его заполнение и
+                                            санитарное
+                                            состояние.
+                                        </th>
+                                        <th scope="col">Наличие листа отметок проведенных влажных уборок.</th>
+                                        <th scope="col">Нал-ие значка о запрете курения</th>
+                                        <th scope="col">Наличие ППК</th>
+                                        <th scope="col">Проверка КПП</th>
+                                        <th scope="col">Проверка мед. книжек</th>
+                                        <th scope="col">Отс-вие акцизной марки</th>
+                                        <th scope="col">Отсутствие зона брака в подс. помещении</th>
+                                        <th scope="col">Внешний вид сотрудников</th>
+                                        <th scope="col">Ведение журналов</th>
+                                        <th scope="col">отсутствие обязательной информации на стенде</th>
+                                        <th scope="col">Прочее</th>
+                                        <th scope="col">Заполнение мусорных баков, урн магазина, своевременный вывоз
+                                            мусора
+                                        </th>
+                                        <th scope="col">Чек-лист</th>
+                                    </tr>
+                                    </thead>
+
+
+                                    <tbody>
+                                    {% for item in model %}
+                                        <tr>
+                                            <td class="util-table">{{ item.shop|default_if_none:"" }}</td>
+                                            <td class="util-table">{{ item.address_shop|default_if_none:"" }}</td>
+                                            <td>{{ item.date|default_if_none:"" }}</td>
+                                            <td>{{ item.etc|default_if_none:"" }}</td>
+                                            <td>{{ item.p1_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p1_2|default_if_none:"" }}</td>
+                                            <td>{{ item.p3_1 |default_if_none:"" }}</td>
+                                            <td>{{ item.p4_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p6_3|default_if_none:"" }}</td>
+                                            <td>{{ item.p7_4|default_if_none:"" }}</td>
+                                            <td>{{ item.p7_2|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_2|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_3|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_4|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_5|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_6|default_if_none:"" }}</td>
+                                            <td>{{ item.p8_7 |default_if_none:"" }}</td>
+                                            <td>{{ item.p9_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_2|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_3|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_4|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_2|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_3|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_4|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_8|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_9|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_5|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_6|default_if_none:"" }}</td>
+                                            <td>{{ item.p1_3|default_if_none:"" }}</td>
+                                            <td>{{ item.p11_4|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_7|default_if_none:"" }}</td>
+                                            <td>{{ item.p10_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p6_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_7|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_8|default_if_none:"" }}</td>
+                                            <td>{{ item.logging|default_if_none:"" }}</td>
+                                            <td>{{ item.p11_5|default_if_none:"" }}</td>
+                                            <td>{{ item.p12_1|default_if_none:"" }}</td>
+                                            <td>{{ item.p9_5_6|default_if_none:"" }}</td>
+                                            <td class="util-table"><a
+                                                    href="{{ item.get_absolute_url|default_if_none:"" }}">Чек-лист</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% else %}
@@ -85,18 +216,22 @@
                 e.preventDefault();
                 var shop = $('#shop-input').val();
                 var sv = $('#sv-input').val();
+                var date = formatdate_yy_mm_dd($('#data-input').val());
+
 
                 $.ajax({
                     method: 'GET',
                     url: $(this).attr('href'),
                     data: {
                         'shop': shop,
-                        'sv': sv
+                        'sv': sv,
+                        'date': date,
                     },
                     dataType: 'json',
                     success: function (data) {
                         console.log(data);
-                        $("#table_id tr").slice(1).remove();
+                        $("#table_mk_report tr").slice(1).remove();
+                        $("#table_mk_report_etc tr").slice(1).remove();
                         for (var i = 0; i < data.elements.length; i++) {
                             var table_row = '<tr>' +
                                 '<td class="util-table">' + data.elements[i].shop + '</td>' +
@@ -105,15 +240,63 @@
                                 '<td>' + data.elements[i].skkro + '</td>' +
                                 '<td>' + data.elements[i].dm_shop + '</td>' +
                                 '<td>' + data.elements[i].sv_shop + '</td>' +
-                                '<td>' + (data.elements[i].sku || '') + '</td>' +
-                                '<td>' + (data.elements[i].p2_1 || '') + '</td>' +
-                                '<td>' + (data.elements[i].p2_sum || '') + '</td>' +
-                                '<td>' + (data.elements[i].dis_price || '') + '</td>' +
-                                '<td>' + (data.elements[i].lack_price || '') + '</td>' +
+                                '<td>' + (data.elements[i].sku) + '</td>' +
+                                '<td>' + (data.elements[i].p2_1) + '</td>' +
+                                '<td>' + (data.elements[i].p2_sum) + '</td>' +
+                                '<td>' + (data.elements[i].dis_price) + '</td>' +
+                                '<td>' + (data.elements[i].lack_price) + '</td>' +
                                 '<td>' + data.elements[i].etc + '</td>' +
                                 '<td class="util-table"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
                                 '</tr>';
-                            $('#table_id').append(table_row);
+                            $('#table_mk_report').append(table_row);
+                        }
+                        for (var i = 0; i < data.elements.length; i++) {
+                            var table_row = '<tr><td class="util-table">' + (data.elements[i].shop || '') + '</td>' +
+                                '<td class="util-table">' + (data.elements[i].address_shop || '') + '</td>' +
+                                '<td>' + formatdate_dd_mm_yy(data.elements[i].date) + '</td>' +
+                                '<td>' + (data.elements[i].etc || '') + '</td>' +
+                                '<td>' + (data.elements[i].p1_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p1_2 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p3_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p4_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p6_3 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p7_4 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p7_2 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_2 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_3 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_4 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_5 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_6 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p8_7 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_2 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_3 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_4 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_2 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_3 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_4 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_8 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_9 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_5 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_6 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p1_3 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p11_4 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_7 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p10_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p6_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_7 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_8 || '') + '</td>' +
+                                '<td>' + (data.elements[i].logging || '') + '</td>' +
+                                '<td>' + (data.elements[i].p11_5 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p12_1 || '') + '</td>' +
+                                '<td>' + (data.elements[i].p9_5_6 || '') + '</td>' +
+                                '<td class="util-table"><a href="/mk/quality_report/' + data.elements[i].slug + '">Чек-лист</a></td>' +
+                                '</tr>';
+
+                            $('#table_mk_report_etc').append(table_row);
                         }
 
 

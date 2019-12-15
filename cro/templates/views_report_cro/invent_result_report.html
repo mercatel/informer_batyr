@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -20,7 +23,7 @@
             </div>
             <div class="row">
                 <div class="col-sm-10">
-                    <table id="table_id" class="table table-bordered table-dark ">
+                    <table id="table_id" class="table table-bordered table-dark table_sort">
                         <thead>
                         <tr>
                             <th scope="col">Магазин</th>
@@ -41,8 +44,6 @@
                             <th scope="col">Дата пред.инвент</th>
                         </tr>
                         </thead>
-
-
                         <tbody>
                         {% for item in model %}
                             <tr>
@@ -64,6 +65,7 @@
                                 <td>{{ item.previous_date }}</td>
                             </tr>
                         {% endfor %}
+
                         </tbody>
                     </table>
                 </div>
@@ -79,46 +81,20 @@
     <script src="{% static 'js/export_to_excel/jquery.table2excel.min.js' %}"></script>
     <script src="{% static 'js/export_to_excel/export_plugin.js' %}"></script>
     <script src="{% static 'js/my_scripts.js' %}"></script>
+    <script src="{% static 'js/table-sort.js' %}"></script>
+    <script src="{% static 'js/table_inv.js' %}"></script>
     <script>
         $(document).ready(function () {
+            var url = "{% url 'search_shop_url' %}";
+            {#var shop = $('#shop-input').val();#}
+            {#tab_inv(shop, url);#}
+
             function ajax_setup(e) {
                 e.preventDefault();
                 var shop = $('#shop-input').val();
 
-                $.ajax({
-                    method: 'GET',
-                    url: $(this).attr('href'),
-                    data: {
-                        'shop': shop
-                    },
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                        $("#table_id tbody").remove();
-                        for (var i = 0; i < data.elements.length; i++) {
-                            var table_row = '<tbody><tr>' +
-                                '<td class="util-table">' + data.elements[i].shop + '</td>' +
-                                '<td>' + data.elements[i].date_inv + '</td>' +
-                                '<td class="util-table">' + data.elements[i].vscro + '</td>' +
-                                '<td>' + data.elements[i].type_inv + '</td>' +
-                                '<td class="util-table">' + data.elements[i].dm_shop + '</td>' +
-                                '<td class="util-table">' + data.elements[i].dm_shop_new + '</td>' +
-                                '<td class="util-table">' + data.elements[i].sv_shop + '</td>' +
-                                '<td>' + data.elements[i].res_main + '</td>' +
-                                '<td>' + data.elements[i].res_defect + '</td>' +
-                                '<td>' + data.elements[i].res_6_line + '</td>' +
-                                '<td>' + data.elements[i].res_4_line + '</td>' +
-                                '<td>' + data.elements[i].resort_001 + '</td>' +
-                                '<td>' + data.elements[i].res_total + '</td>' +
-                                '<td>' + data.elements[i].t_o + '</td>' +
-                                '<td>' + data.elements[i].percent_of_to + '%' + '</td>' +
-                                '<td>' + data.elements[i].previous_date +
-                                '</td></tr></tbody>';
-
-                            $('table').append(table_row);
-                        }
-                    }
-                });
+                console.log(url);
+                tab_inv(shop, url);
             }
 
             $('#search-shop').click(ajax_setup);
