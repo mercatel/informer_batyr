@@ -1,3 +1,4 @@
+
 Body {
     background-color: #FFF8DC;
 }
@@ -68,4 +69,17 @@ Body {
 
 .text-table{
     text-align: center;
+}
+
+
+.play-GIF-on-hover {
+    width: 80%;
+    height: 80%;
+    background-image: url('/static/img/metod_upload1c_stat.gif');
+
+}
+.play-GIF-on-hover:hover {
+
+    background-image: url('/static/img/metod_upload1C.gif');
+
 }

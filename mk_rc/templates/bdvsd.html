@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+        <div class="container-fluid">
+        <div>
+            <a class="btn btn-primary" href="{% url 'form_bd_vsd_url' %}" role="button">Добавить</a>
+        </div>
+            <table class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Наименование 1С</th>
+                    <th scope="col">Наименование Меркурий</th>
+                    <th scope="col">Вес упаковки</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in bd_vsd %}
+                    <tr>
+                        <td>{{ item.name_1c }}</td>
+                        <td>{{ item.name_merc }}</td>
+                        <td>{{ item.w_in_pack }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'edit_bd_vsd_url' id=item.id %}"
+                               role="button">Изменить</a>
+                            <a class="btn btn-primary" href="{% url 'delete_bd_vsd_url' id=item.id %}"
+                               role="button">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}

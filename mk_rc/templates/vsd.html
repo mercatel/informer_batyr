@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div>
+                <form class="form-inline">
+                    <input id="shop-input" class="form-inline mr-sm-2" type="search" placeholder="Введите № магазина">
+                    <a href="{% url 'vsd_url' %}" id="search-shop">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+                    </a>
+                </form>
+            </div>
+
+            <table class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Магазин</th>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">кол-во</th>
+                    <th scope="col">Наименование Меркурий</th>
+                    <th scope="col">Копировать</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in context %}
+                    <tr>
+                        <th scope="row">{{ item.0 }}</th>
+                        <td>{{ item.1 }}</td>
+                        <td>{{ item.2 }}</td>
+                        <td>{{ item.3 }}</td>
+                        <td id="txt{{ forloop.counter }}">{{ item.4 }}</td>
+                        <td>
+                            <button id="btn{{ forloop.counter }}"
+                                    class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                                Copy
+                            </button>
+                            <script>
+                                var button = document.getElementById('btn{{ forloop.counter }}');
+                                button.addEventListener('click', function () {
+                                    var ta = document.getElementById('txt{{ forloop.counter }}');
+                                    var range = document.createRange();
+                                    range.selectNode(ta);
+                                    window.getSelection().addRange(range);
+                                    try {
+                                        document.execCommand('copy');
+                                    } catch (err) {
+                                        console.log('Can`t copy, boss');
+                                    }
+                                    window.getSelection().removeAllRanges();
+                                });
+                            </script>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

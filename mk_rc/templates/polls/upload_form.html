@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'js/dropzone/dist/dropzone.css' %}">
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div style="margin:2% 2%">
+                        <form action="{% url 'import_url' %}" class="dropzone" method="post">
+                            {% csrf_token %}
+                            <div class="fallback">
+                                <input name="file" type="file" multiple/>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="play-GIF-on-hover">
+                        <img src="" class="img-fluid" alt="">
+                    </div>
+                </div>
+                <div class="col">
+                    <h1>Пример файла с отбора 1С</h1>
+                    <img src="{% static 'img/exemplar1c.jpg' %}" class="img-fluid" alt="">
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h1>Нет прав</h1>
+    {% endif %}
+{% endblock %}
+{% block jsscript %}
+    <script src='{% static 'js/dropzone/dist/dropzone.js' %}'></script>
+{% endblock %}
