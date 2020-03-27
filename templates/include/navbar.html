@@ -10,6 +10,24 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
             </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{% url 'vsd_url' %}" id="navbarDropdown" role="button"
+                   data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    ВСД
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'vsd_url' %}">Результат</a>
+                    <a class="dropdown-item" href="{% url 'bd_vsd_url' %}">БД Меркурий</a>
+                    <a class="dropdown-item" href="{% url 'import_url' %}">отбор с 1С</a>
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+
+
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
@@ -18,7 +36,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'check_list_mk_url' %}">Чек-лист</a>
                     <a class="dropdown-item" href="{% url 'mk_report_url' %}">Отчет</a>
-{#                    <a class="dropdown-item" href="{% url 'mk_etc_report_url' %}">Отчет Прочее</a>#}
+                    {#                    <a class="dropdown-item" href="{% url 'mk_etc_report_url' %}">Отчет Прочее</a>#}
                     <a class="dropdown-item" href="{% url 'mk_nkro_report_url' %}">Отчет НКРО</a>
 
                     <div class="dropdown-divider"></div>
@@ -33,7 +51,7 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="{% url 'table_inv' %}">Таблица Итогов</a>
                     <a class="dropdown-item" href="{% url 'invent_report_url' %}">Отчет Результаты</a>
-{#                    <a class="dropdown-item" href="{% url 'invent_report_stats_url' %}">Отчет Статистика</a>#}
+{#                                        <a class="dropdown-item" href="{% url 'invent_report_stats_url' %}">Отчет Статистика</a>#}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
