@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="mercatel.ru" uploadOnCheckin="f7f67d25-de78-423a-ab84-8f8a79e20a46">
+  <component name="PublishConfigData" serverName="mercatel.ru">
     <serverData>
       <paths name="mercatel.ru">
         <serverdata>
@@ -10,6 +10,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="mercatel.ru" />
   </component>
 </project>

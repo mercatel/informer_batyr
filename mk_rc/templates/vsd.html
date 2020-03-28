@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     {% if user.is_authenticated %}
@@ -6,13 +7,13 @@
             <div>
                 <form class="form-inline">
                     <input id="shop-input" class="form-inline mr-sm-2" type="search" placeholder="Введите № магазина">
-                    <a href="{% url 'vsd_url' %}" id="search-shop">
+                    <a href="{% url 'vsd_filtr_url' %}" id="search-shop">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
                     </a>
                 </form>
             </div>
 
-            <table class="table table-bordered table-dark">
+            <table id="vsd_table" class="table table-bordered table-dark">
                 <thead>
                 <tr>
                     <th scope="col">Магазин</th>
@@ -30,27 +31,11 @@
                         <td>{{ item.1 }}</td>
                         <td>{{ item.2 }}</td>
                         <td>{{ item.3 }}</td>
-                        <td id="txt{{ forloop.counter }}">{{ item.4 }}</td>
+                        <td id="tbtn{{ forloop.counter }}">{{ item.4 }}</td>
                         <td>
-                            <button id="btn{{ forloop.counter }}"
-                                    class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                                Copy
+                            <button id="btn{{ forloop.counter }}" class="btn btn-outline-success my-2 my-sm-0"
+                                    type="submit">Copy
                             </button>
-                            <script>
-                                var button = document.getElementById('btn{{ forloop.counter }}');
-                                button.addEventListener('click', function () {
-                                    var ta = document.getElementById('txt{{ forloop.counter }}');
-                                    var range = document.createRange();
-                                    range.selectNode(ta);
-                                    window.getSelection().addRange(range);
-                                    try {
-                                        document.execCommand('copy');
-                                    } catch (err) {
-                                        console.log('Can`t copy, boss');
-                                    }
-                                    window.getSelection().removeAllRanges();
-                                });
-                            </script>
                         </td>
                     </tr>
                 {% endfor %}
@@ -62,10 +47,60 @@
     {% else %}
         <h1>Нет прав</h1>
     {% endif %}
+{% endblock %}
+
+{% block jsscript %}
+    <script src="{% static 'js/copykey.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+
+                function ajax_setup(e) {
+                    e.preventDefault();
+                    var shop = $('#shop-input').val();
+
+                    $.ajax({
+                        method: 'GET',
+                        url: $(this).attr('href'),
+                        data: {
+                            'shop': shop,
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            {#console.log(data.elements);#}
+                            $("#vsd_table tr").slice(1).remove();
+                            var count = 0;
+                            for (var i = 1; i < (Object.keys(data.elements).length) + 1; i++) {
+                                count += 1;
+                                var table_row = '<tr>' +
+                                    '<td>' + data.elements[i].shop + '</td>' +
+                                    '<td>' + data.elements[i].name1c + '</td>' +
+                                    '<td>' + data.elements[i].date + '</td>' +
+                                    '<td>' + data.elements[i].quant + '</td>' +
+                                    '<td id="tbtn' + count + '">' + data.elements[i].namemerc + '</td>' +
+                                    '<td>' + '<button id="btn' + count + '"' + ' class="btn btn-outline-success my-2 my-sm-0" type="submit">Copy</button>' +
+                                    '</td>' +
+                                    '</tr>';
+                                $('#vsd_table').append(table_row);
+
+
+                            }
+                            copy();
+                        }
+                    });
+                }
+
+                $('#search-shop').click(ajax_setup);
+                copy();
 
 
 
 
 
+            }
+        )
+
+
+    </script>
 
 {% endblock %}

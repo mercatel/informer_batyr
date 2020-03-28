@@ -1,6 +1,7 @@
 import collections
+import json
 
-from django.http import HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 import django_excel as excel
 
@@ -9,10 +10,8 @@ from mk_rc.models import Vsd1C, VsdMerc
 
 
 def vsd(request):  # добавить фильтр по магазину через Ajax
-    if request.GET:
-        shop = request.GET.get('shop')
-    else:
-        shop = ""
+
+    shop = ""
     context = []
     for item in Vsd1C.objects.filter(shop__contains=shop):
         shop = item.shop
@@ -41,6 +40,61 @@ def vsd(request):  # добавить фильтр по магазину чер�
         else:
             context.append(res)
     return render(request, 'vsd.html', locals())
+
+
+def vsd_filtr(request):
+    if request.GET:
+        shop = request.GET.get('shop')
+        context = []
+        for item in Vsd1C.objects.filter(shop__contains=shop):
+            shop = item.shop
+            name1c = item.name_1c
+            data = item.data_1c
+            count = 0
+            name_merc = "ищем в ручную"
+            quantity = 0
+
+            for item in VsdMerc.objects.filter(name_1c=name1c):
+                name_merc = item.name_merc
+                quantity = item.w_in_pack
+
+            for item1 in Vsd1C.objects.filter(shop=shop, name_1c=name1c, data_1c=data):
+                count += 1
+
+            if quantity == 0:
+                quant = "???"
+            else:
+                quant = count * quantity
+
+            res = [shop, name1c, data, quant, name_merc]
+
+            if res in context:
+                pass
+            else:
+                context.append(res)
+        data = {}
+        count_js = 0
+        for item in context:
+            count_js += 1
+            res = {
+                str(count_js): {"shop": str(item[0]),
+                                "name1c": str(item[1]),
+                                "date": str(item[2]),
+                                "quant": str(item[3]),
+                                "namemerc": str(item[4])
+                                },
+            }
+            data.update(res)
+
+        print(data)
+
+        context_res = {
+            'elements': data,
+        }
+
+        return JsonResponse(context_res)
+    else:
+        pass
 
 
 def bd_vsd(request):
