@@ -6,9 +6,12 @@ from django.shortcuts import render
 from django.views.generic import FormView
 from django.views.generic.base import View
 
+from batyr.models import News
+
 
 def homepage(request):
-    return render(request, 'base.html', locals())  # заменить locals на context
+    news = News.objects.all()
+    return render(request, 'news.html', locals())  # заменить locals на context
 
 
 class LoginFormView(FormView):

@@ -86,8 +86,6 @@ def vsd_filtr(request):
             }
             data.update(res)
 
-        print(data)
-
         context_res = {
             'elements': data,
         }

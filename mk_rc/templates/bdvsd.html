@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/table-sort.css' %}">
+{% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
 
         <div class="container-fluid">
-        <div>
-            <a class="btn btn-primary" href="{% url 'form_bd_vsd_url' %}" role="button">Добавить</a>
-        </div>
-            <table class="table table-bordered table-dark">
+            <div>
+                <a class="btn btn-primary" href="{% url 'form_bd_vsd_url' %}" role="button">Добавить</a>
+            </div>
+            <table class="table table-bordered table-dark table_sort">
                 <thead>
                 <tr>
                     <th scope="col">Наименование 1С</th>
@@ -37,4 +43,8 @@
     {% else %}
         <h1>Нет прав</h1>
     {% endif %}
+{% endblock %}
+
+{% block jsscript %}
+    <script src="{% static 'js/table-sort.js' %}"></script>
 {% endblock %}
