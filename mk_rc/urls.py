@@ -2,7 +2,7 @@
 
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from mk_rc import views, polls
 
@@ -17,4 +17,7 @@ urlpatterns = [
     path('uplink/', polls.upload, name='uplink'),
     path('exchange/(.*)', polls.exchange, name="exchange"),
     path('import_1c/', polls.import_sheet, name="import_url"),
+
+    path('api_vsd_merc/', views.ApiVsdMerc.as_view(), name='api_vsd_merc_url'),
+    path('api_vsd_merc/<int:id_vsd>', views.ApiVsdMerc.as_view(), name='api_vsd_merc_detail_url'),
 ]

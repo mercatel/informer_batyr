@@ -9,9 +9,10 @@ Body {
 }
 
 
-.util-table{
+.util-table {
     white-space: nowrap;
 }
+
 .table-bordered-color {
     border: 1px solid #000000;
     font-size: 16px;
@@ -51,23 +52,26 @@ Body {
     text-align: left;
     margin: 0 auto 20px;
 }
-.img1{
+
+.img1 {
     font-size: 18px;
     color: rgba(0, 0, 0, 0);
 }
-.img1:before{
+
+.img1:before {
     content: "Чек-лист";
     color: #000000;
     position: absolute;
     margin: 0 -3px;
     white-space: nowrap;
 }
-.img1:hover{
+
+.img1:hover {
     color: rgba(0, 0, 0, 0);
     content: "Xtr";
 }
 
-.text-table{
+.text-table {
     text-align: center;
 }
 
@@ -78,8 +82,12 @@ Body {
     background-image: url('/static/img/metod_upload1c_stat.gif');
 
 }
+
 .play-GIF-on-hover:hover {
 
     background-image: url('/static/img/metod_upload1C.gif');
 
 }
+
+
+

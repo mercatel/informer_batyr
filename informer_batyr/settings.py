@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'pyexcel_xls',
     'ckeditor',
     'ckeditor_uploader',
+    'rest_framework'
 
 ]
 

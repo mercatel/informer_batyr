@@ -4,9 +4,13 @@ import json
 from django.http import HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 import django_excel as excel
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from mk_rc.forms import FormBdVsd
 from mk_rc.models import Vsd1C, VsdMerc
+from mk_rc.serializers import VsdMercSerializer
 
 
 def vsd(request):  # добавить фильтр по магазину через Ajax
@@ -96,8 +100,8 @@ def vsd_filtr(request):
 
 
 def bd_vsd(request):
-    vsd1c = Vsd1C.objects.all()
-    bd_vsd = VsdMerc.objects.all()
+    # vsd1c = Vsd1C.objects.all()
+    # bd_vsd = VsdMerc.objects.all()
     return render(request, 'bdvsd.html', locals())
 
 
@@ -138,3 +142,64 @@ def delete_bd_vsd(request, id):
         return HttpResponseRedirect("/mk_rc/bd_vsd/")
     except VsdMerc.DoesNotExist:
         return HttpResponseNotFound("<h2>Error</h2>")
+
+
+class ApiVsdMerc(APIView):
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.data = None
+        self.method = None
+
+    def get(self, request):
+        model = VsdMerc.objects.all()
+        serializer = VsdMercSerializer(model, many=True)
+        data = serializer.data
+        return Response(data)
+
+    def post(self, request):
+        print(request.data)
+        review = VsdMercSerializer(data=request.data)
+        if review.is_valid():
+            review.save()
+        else:
+            print('невалидны')
+
+        return Response(status=201)
+
+    def delete(self, request, id_vsd):
+        print(id_vsd)
+        model = VsdMerc.objects.get(id=id_vsd)
+        model.delete()
+        return Response(status=204)
+
+    def put(self, request, id_vsd):
+        print(request.data)
+        model = VsdMerc.objects.get(id=id_vsd)
+        serializer = VsdMercSerializer(model, data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # Update table in DB
+            return Response(serializer.data)
+
+
+@api_view(['GET', 'DELETE', 'PUT'])
+def details(request, id_vsd):
+    print(id_vsd)
+    try:
+        model = VsdMerc.objects.get(id=id_vsd)
+    except:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        serializer = VsdMercSerializer(model)
+        return Response(serializer.data)
+    elif request.method == 'PUT':  # Update
+        serializer = VsdMercSerializer(model, data=request.data)
+        if serializer.is_valid():
+            serializer.save()  # Update table in DB
+            return Response(serializer.data)
+
+        return Response(serializer.errors, status=400)  # Bad request
+    elif request.method == 'DELETE':
+        model.delete()
+        return Response(status=204)

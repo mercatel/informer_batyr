@@ -10,36 +10,29 @@
     {% if user.is_authenticated %}
 
         <div class="container-fluid">
-            <div>
-                <a class="btn btn-primary" href="{% url 'form_bd_vsd_url' %}" role="button">Добавить</a>
-            </div>
-            <table class="table table-bordered table-dark table_sort">
+            <table id="table_vsd_merc" class="table table-bordered table-dark table_sort">
                 <thead>
                 <tr>
                     <th scope="col">Наименование 1С</th>
                     <th scope="col">Наименование Меркурий</th>
                     <th scope="col">Вес упаковки</th>
-
                 </tr>
                 </thead>
-                <tbody>
-                {% for item in bd_vsd %}
-                    <tr>
-                        <td>{{ item.name_1c }}</td>
-                        <td>{{ item.name_merc }}</td>
-                        <td>{{ item.w_in_pack }}</td>
-                        <td>
-                            <a class="btn btn-primary" href="{% url 'edit_bd_vsd_url' id=item.id %}"
-                               role="button">Изменить</a>
-                            <a class="btn btn-primary" href="{% url 'delete_bd_vsd_url' id=item.id %}"
-                               role="button">Удалить</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-
-                </tbody>
+                <thead>
+                <tr>
+                    <th><input class="form-control" type="text" id="name_1c"/></th>
+                    <th><input class="form-control" type="text" id="name_merc"/></th>
+                    <th><input class="form-control" id="w_in_pack" type="number" min="0" max="120" step="0.01"/>
+                    </th>
+                    <th>
+                        <button id="btn_add_vsd" class="btn btn-outline-success">Добавить</button>
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="table_vsd" id="table_vsd_merc_row"></tbody>
             </table>
         </div>
+
     {% else %}
         <h1>Нет прав</h1>
     {% endif %}
@@ -47,4 +40,127 @@
 
 {% block jsscript %}
     <script src="{% static 'js/table-sort.js' %}"></script>
+    <script>
+        var URL = '{% url 'api_vsd_merc_url' %}';
+
+        $(document).ready(
+            function () {
+                document.querySelector('.table_vsd').addEventListener('click', function (e) {
+                    if ((e.target.classList.contains('btn_del'))) {
+                        var get_id = e.target.getAttribute('id');
+                        del(get_id);
+                    } else if ((e.target.classList.contains('btn_edit'))) {
+                        var get_id = e.target.getAttribute('id');
+                        edit(get_id);
+                    } else {
+                    }
+                });
+
+                function get_vsd() {
+                    $.getJSON(
+                        URL,
+                        createTable
+                    );
+                }
+
+                function createTable(data) {
+                    $("#table_vsd_merc_row").html("");
+                    for (var i = 1; i < data.length; i++) {
+                        var table_row = '<tr id="txt' + data[i].id + '">' +
+                            '<td>' + data[i].name_1c + '</td>' +
+                            '<td>' + data[i].name_merc + '</td>' +
+                            '<td>' + data[i].w_in_pack + '</td>' +
+                            '<td>' +
+                            '<button class="btn_edit btn btn-outline-warning" id="btn_edit' + data[i].id + '">Изменить</button>' +
+                            '<button class="btn_del btn btn-outline-danger" id="btn' + data[i].id + '">Удалить</button>' +
+                            '</td>' +
+                            '</tr>';
+                        $("#table_vsd_merc_row").append(table_row);
+                    }
+                }
+
+                document.getElementById("btn_add_vsd").addEventListener("click", add_vsd_merc);
+
+                function add_vsd_merc() {
+                    var name_1c = $("#name_1c").val();
+                    var name_merc = $("#name_merc").val();
+                    var w_in_pack = $("#w_in_pack").val();
+                    $.ajax(
+                        {
+                            url: URL,
+                            type: 'POST',
+                            beforeSend: function (xhr, settings) {
+                                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                            },
+                            data: {
+                                name_1c: name_1c,
+                                name_merc: name_merc,
+                                w_in_pack: w_in_pack,
+                            },
+                            success: function () {
+                                $('#name_1c').val('').change();
+                                $('#name_merc').val('').change();
+                                $('#w_in_pack').val('').change();
+                                get_vsd()
+                            },
+                        }
+                    );
+                }
+
+                function del(id) {
+                    var id_vsd = id.replace(/\D+/g, "");
+                    $.ajax(
+                        {
+                            url: URL + id_vsd,
+                            beforeSend: function (xhr, settings) {
+                                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                            },
+                            type: 'DELETE',
+                            success: get_vsd,
+                        }
+                    );
+                }
+
+                function edit(id) {
+                    var id = id.replace(/\D+/g, "");
+                    var a = "#txt" + id;
+                    var q_td = document.querySelectorAll(a + " td");
+                    $(a).html("");
+                    var table_row =
+                        '<td>' + '<input id="edit_name1c" class="form-control" type="text" value="' + q_td[0].innerHTML + '">' + '</td>' +
+                        '<td>' + '<input id="edit_name_merc" class="form-control" type="text" value="' + q_td[1].innerHTML + '">' + '</td>' +
+                        '<td>' + '<input id="edit_w_in_pack" class="form-control" type="number" step=0.01 value="' + q_td[2].innerHTML + '">' + '</td>' +
+                        '<td>' + '<button id="save_ediot" class="btn btn-outline-success">Сохранить</button>' + '</td>';
+                    $(a).append(table_row);
+                    save_edit(id)
+                }
+
+                function save_edit(id) {
+                    document.getElementById("save_ediot").addEventListener("click", function () {
+                        var id_vsd = id;
+                        var name_1c = $("#edit_name1c").val();
+                        var name_merc = $("#edit_name_merc").val();
+                        var w_in_pack = $("#edit_w_in_pack").val();
+                        $.ajax(
+                            {
+                                url: URL + id_vsd,
+                                beforeSend: function (xhr, settings) {
+                                    xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                                },
+                                data: {
+                                    name_1c: name_1c,
+                                    name_merc: name_merc,
+                                    w_in_pack: w_in_pack,
+                                },
+                                type: "PUT",
+                                success: get_vsd,
+                            });
+                    });
+
+                }
+
+                get_vsd();
+            }
+        );
+    </script>
 {% endblock %}
