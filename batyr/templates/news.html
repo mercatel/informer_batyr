@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block content %}
+
+
+{% block news %}
     <div class="container-fluid">
         {% for new in news %}
             <div class="jumbotron">
@@ -15,4 +17,81 @@
                 <hr class="my-0">
             </div>
         {% endfor %}
+    </div>
+{% endblock %}
+
+{% block comment %}
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Написать
+        Комементарий
+    </button>
+    {% include 'modal_for_comment.html' %}
+    {% for item in comment %}
+        <div class="card">
+            <div class="card-header"> Комментарий</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ item.category_comment.category }}</h5>
+                <p class="card-text">{{ item.comment_txt }}</p>
+            </div>
+        </div>
+    {% endfor %}
+
+
+
+{% endblock %}
+
+
+{% block jsscript %}
+    <script>
+        var URL = {% url 'api_comment_url' %}
+            $(document).ready(function () {
+                $("#comment_txt").val('').change();
+                $("#category_comment").val('').change();
+
+                document.getElementById('send_comment').addEventListener("click", add_comment);
+
+                function add_comment() {
+
+
+                    var comment_txt = $("#comment_txt").val();
+                    var category_comment = $("#category_comment").val().replace(/\D+/g, "");
+                    console.log(category_comment);
+
+                    console.log(comment_txt + "--" + category_comment + "-" + comment_txt);
+                    $.ajax(
+                        {
+                            url: URL,
+                            type: 'POST',
+                            beforeSend: function (xhr, settings) {
+                                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                            },
+                            data: {
+                                category_comment: category_comment,
+                                comment_txt: comment_txt,
+                            },
+                            success: end,
+                        }
+                    );
+
+                    function end() {
+                        $('#form_comment').html("");
+                        $('#exampleModalLabel').html("");
+                        $('#send_comment').remove();
+
+
+                        var txt_end = '<h1 style="text-align: center" class="display-4">Спасибо зв комментарий</h1>';
+                        $('#form_comment').append(txt_end);
+
+                        document.getElementById('close_comment').addEventListener("click", function () {
+                            setTimeout(window.location.reload(), 5000)
+                        });
+
+
+                    }
+                }
+
+
+            })
+
+
+    </script>
 {% endblock %}

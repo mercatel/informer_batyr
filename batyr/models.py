@@ -93,3 +93,33 @@ class News(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CommentCategory(models.Model):
+    """ Класс категорий комментариев"""
+    category = models.CharField('Категория', max_length=240)
+
+    class Meta:
+        verbose_name = "Категория комментария"
+        verbose_name_plural = "Категории комментариев"
+
+    def __str__(self):
+        return self.category
+
+
+class Comment(models.Model):
+    """ Клас комментариев"""
+    category_comment = models.ForeignKey(CommentCategory, verbose_name="Категория комментариев", on_delete=models.SET_NULL,
+                                         null=True)
+    comment_txt = models.TextField()
+    comment_create = models.DateTimeField("Дата комментария", auto_now_add=True)
+    comment_check = models.BooleanField('Прочитаны', default=False)
+
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
+    def __str__(self):
+        return self.category_comment
+
+

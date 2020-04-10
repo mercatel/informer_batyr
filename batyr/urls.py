@@ -12,4 +12,5 @@ urlpatterns = [
     path('mk_rc/', include('mk_rc.urls'), name='mk_rc_url'),
     path('login/', views.LoginFormView.as_view(), name='login_url'),
     path('logout/', views.LogoutView.as_view(), name='logout_url'),
+    path('api_comment/', views.CommentApi.as_view(), name='api_comment_url'),
 ]

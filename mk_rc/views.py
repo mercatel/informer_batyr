@@ -168,7 +168,6 @@ class ApiVsdMerc(APIView):
         return Response(status=201)
 
     def delete(self, request, id_vsd):
-        print(id_vsd)
         model = VsdMerc.objects.get(id=id_vsd)
         model.delete()
         return Response(status=204)

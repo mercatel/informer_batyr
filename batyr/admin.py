@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from batyr.models import Shop, Legal_entity, Supervisor, News, Category, Tag
+from batyr.models import Shop, Legal_entity, Supervisor, News, Category, Tag, Comment, CommentCategory
 
 
 class ShopAdmin(admin.ModelAdmin):
@@ -9,6 +9,10 @@ class ShopAdmin(admin.ModelAdmin):
     class Meta:
         model = Shop
 
+
+
+admin.site.register(Comment)
+admin.site.register(CommentCategory)
 
 admin.site.register(News)
 admin.site.register(Category)
