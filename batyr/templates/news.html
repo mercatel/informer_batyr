@@ -1,46 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block head %}
+    <link rel="stylesheet" href="{% static 'js/simplePagination/simplePagination.css' %}">
+{% endblock %}
 
 
 {% block news %}
-    <div class="container-fluid">
-        {% for new in news %}
-            <div class="jumbotron">
-                <h3 class="display-5">{{ new.title }}</h3>
-                <p style="text-align: right" class="lead">{{ new.created }}, Автор: {{ new.user }}</p>
-                <h5>{{ new.text_min| safe }}</h5>
-                <hr class="my-4">
-                <div class="row">
-                    {{ new.text| safe }}
+    <div class="row mb-2">
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <div id="dark-pagination_news" class="pagination"></div>
+                <div id="news" class="container-fluid">
+                    {% for new in news reversed %}
+                        <div class="jumbotron">
+                            <h3 class="display-5">{{ new.title }}</h3>
+                            <p style="text-align: right" class="lead">{{ new.created }}, Автор: {{ new.user }}</p>
+                            <h5>{{ new.text_min| safe }}</h5>
+                            <hr class="my-4">
+                            <div class="row">
+                                {{ new.text| safe }}
+                            </div>
+                            <hr class="my-0">
+                        </div>
+                    {% endfor %}
                 </div>
-                <hr class="my-0">
             </div>
-        {% endfor %}
+            <div class="col-auto d-none d-lg-block">
+            </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block comment %}
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Написать
-        Комементарий
-    </button>
-    {% include 'modal_for_comment.html' %}
-    {% for item in comment %}
-        <div class="card">
-            <div class="card-header"> Комментарий</div>
-            <div class="card-body">
-                <h5 class="card-title">{{ item.category_comment.category }}</h5>
-                <p class="card-text">{{ item.comment_txt }}</p>
+    <div class="col-md-6">
+        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Написать
+                    Комементарий
+                </button>
+                {% include 'modal_for_comment.html' %}
+                <div id="dark-pagination_comment" class="pagination"></div>
+                <div id="comment">
+                    {% for item in comment reversed %}
+                        <div class="card">
+                            <div class="card-header">
+                                <div>Комментарий</div>
+                                <div style="text-align: right">{{ item.comment_create }}</div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ item.category_comment.category }}</h5>
+                                <p class="card-text">{{ item.comment_txt }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
             </div>
+
         </div>
-    {% endfor %}
-
-
-
+    </div>
+    </div>
+    </div>
 {% endblock %}
 
 
 {% block jsscript %}
+    <script src="{% static 'js/simplePagination/jquery.simplePagination.js' %}"></script>
     <script>
         var URL = {% url 'api_comment_url' %}
             $(document).ready(function () {
@@ -82,7 +109,10 @@
                         $('#form_comment').append(txt_end);
 
                         document.getElementById('close_comment').addEventListener("click", function () {
-                            setTimeout(window.location.reload(), 5000)
+                            window.location.reload()
+                        });
+                        document.getElementById('closed_comment').addEventListener("click", function () {
+                            window.location.reload()
                         });
 
 
@@ -90,7 +120,40 @@
                 }
 
 
-            })
+            });
+
+        var perPage_comment = 3;
+        var items_comment = $("#comment .card");
+        var id_paginator_comment = 'dark-pagination_comment';
+
+        var perPage_news = 3;
+        var items_news = $("#news .jumbotron");
+        var id_paginator_news = 'dark-pagination_news';
+
+
+        paginator(items_news, perPage_news, id_paginator_news);
+        paginator(items_comment, perPage_comment, id_paginator_comment);
+
+
+        function paginator(items, perPage, id_paginator) {
+            var numItems = items.length;
+            if (numItems > 3) {
+                items.slice(perPage).hide();
+                $('#' + id_paginator).pagination({
+                    items: numItems,
+                    itemsOnPage: perPage,
+                    prevText: "<<=",
+                    nextText: "=>>",
+                    onPageClick: function (pageNumber) {
+                        var showFrom = perPage * (pageNumber - 1);
+                        var showTo = showFrom + perPage;
+                        items.hide()
+                            .slice(showFrom, showTo).show();
+                    }
+                });
+            }
+
+        }
 
 
     </script>

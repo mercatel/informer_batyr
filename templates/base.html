@@ -16,28 +16,15 @@
 </head>
 <body>
 {% include 'include/navbar.html' %}
-<div class="row mb-2">
-    <div class="col-md-6">
-        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                {% block news %}
-                {% endblock %}
-            </div>
-            <div class="col-auto d-none d-lg-block">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-            <div class="col p-4 d-flex flex-column position-static">
-                {% block comment %}
-                {% endblock %}
-            </div>
-            <div class="col-auto d-none d-lg-block">
-            </div>
-        </div>
-    </div>
-</div>
+
+
+{% block news %}
+{% endblock %}
+
+
+{% block comment %}
+{% endblock %}
+
 {% block content %}
 {% endblock %}
 

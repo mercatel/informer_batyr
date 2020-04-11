@@ -120,6 +120,6 @@ class Comment(models.Model):
         verbose_name_plural = "Комментарии"
 
     def __str__(self):
-        return self.category_comment
+        return str(self.category_comment) + " - " +  str(self.comment_check)
 
 
